@@ -71,7 +71,7 @@ STATIC_ROOT = '/home1/semantik/public_html/modelador_light/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = 'modelador_light/static/'
+STATIC_URL = '/modelador_light/static/'
 
 # Additional locations of static files
 
