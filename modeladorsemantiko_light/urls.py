@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^modelador_light/admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^modelador_light/admin/', include(admin.site.urls)),
 
     (r'^modelador_light/api/', include(v1_api.urls)),
     (r'^modelador_light/favicon.ico', generic.RedirectView.as_view(url='http://mozilla.org/favicon.ico')),
