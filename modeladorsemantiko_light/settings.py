@@ -13,28 +13,28 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'OPTIONS': {
-#            'read_default_file': '/modeladorsemantiko_light/modeladorsemantiko_light/my.cnf',
-#            },
-#        }
-#}
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'OPTIONS'  : { 'init_command' : 'SET storage_engine=MyISAM' },# Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'test',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/home1/semantik/django_proyectos/my.cnf',
+            },
+        }
 }
+
+#
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#        'OPTIONS'  : { 'init_command' : 'SET storage_engine=MyISAM' },# Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#        'NAME': 'test',                      # Or path to database file if using sqlite3.
+#        # The following settings are not used with sqlite3:
+#        'USER': 'admin',
+#        'PASSWORD': 'admin',
+#        'HOST': '127.0.0.1',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+#        'PORT': '',                      # Set to empty string for default.
+#    }
+#}
 
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
