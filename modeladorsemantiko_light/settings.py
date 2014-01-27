@@ -4,6 +4,7 @@ import os.path
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
+PROJECT_DIR = os.path.dirname(__file__)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -70,16 +71,17 @@ STATIC_ROOT = '/home1/semantik/public_html/modelador_light/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = 'modelador_light/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-#    '/home1/semantik/public_html/modelador_light/static/',
-    os.path.join(PROJECT_ROOT, 'static'),
+
+
+STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
+
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-)
+
 
 # List of finder classes that know how to find static files in
 # various locations.
