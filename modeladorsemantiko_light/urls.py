@@ -21,18 +21,18 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'modeladorsemantiko_light.views.home', name='home'),
     # url(r'^modeladorsemantiko_light/', include('modeladorsemantiko_light.foo.urls')),
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
+    url(r'^modelador_light/autocomplete/', include('autocomplete_light.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^modelador_light/admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^modelador_light/admin/', include(admin.site.urls)),
 
-    (r'^api/', include(v1_api.urls)),
-    (r'^favicon.ico', generic.RedirectView.as_view(url='http://mozilla.org/favicon.ico')),
+    (r'^modelador_light/api/', include(v1_api.urls)),
+    (r'^modelador_light/favicon.ico', generic.RedirectView.as_view(url='http://mozilla.org/favicon.ico')),
 
-    (r'^$', generic.TemplateView.as_view(template_name='index.html'))
+    (r'^modelador_light/$', generic.TemplateView.as_view(template_name='index.html'))
 
 )
 
