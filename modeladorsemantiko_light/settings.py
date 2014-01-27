@@ -77,7 +77,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = '/home1/semantik/public_html/modelador_light/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -85,6 +85,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -123,7 +124,7 @@ ROOT_URLCONF = 'modeladorsemantiko_light.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'modeladorsemantiko_light.wsgi.application'
 
-TEMPLATE_DIRS = ('/Users/ehebel/PycharmProjects/modeladorsemantiko_light/templates',)
+TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
