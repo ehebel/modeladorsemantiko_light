@@ -7,7 +7,7 @@ autocomplete_light.register(nanda,
     search_fields=['titulo',],
     attrs={
         # This will set the input placeholder attribute:
-        'placeholder': 'Other model name ?',
+        'placeholder': 'titulos NANDA ?',
 
         # This will set the yourlabs.Autocomplete.minimumCharacters
         # options, the naming conversion is handled by jQuery
@@ -26,7 +26,7 @@ autocomplete_light.register(nandaDominio,
 
     attrs={
         # This will set the input placeholder attribute:
-        'placeholder': 'Other model name ?',
+        'placeholder': 'titulos Dominio NANDA ?',
         # This will set the yourlabs.Autocomplete.minimumCharacters
         # options, the naming conversion is handled by jQuery
         'data-widget-minimum-characters': 1,
