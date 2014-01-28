@@ -1,20 +1,59 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Welcome to django-autocomplete-light test_project
+    Bienvenido al Modelador Semantiko
 {% endblock %}
 
 {% block content %}
-    Please choose demo to visit:
+    Favor elegir proyecto:
     <ul>
         <li>
-            <a href="/modelador_light/admin/">admin demos</a> - please log in as test/test
+            <a href="/modelador_light/admin">INGRESAR</a>
         </li>
         <li>
-            <a href="/modelador_light/autocomplete/">autocomplete</a> - see all registered
-            autocompletes - URLs that produce data for the autocomplete light
-            widget
+            Creación de Conceptos:
+            <ul><a href="/modelador_light/kairos/">Kairos </a></ul>
+            <ul><a href="/modelador_light/kairos_capsulas/">Kairos (Caps. y Grag.)</a></ul>
+
+            <ul><a href="/modelador_light/kairos_tabletas/">Kairos Tabletas</a></ul>
+            <ul><a href="/modelador_light/kairos_jarabes/">Kairos Jarabes</a></ul>
+            <ul><a href="/modelador_light/kairos_gotas/">Kairos Gotas</a></ul>
+            <ul><a href="/modelador_light/kairos_ampollas/">Kairos Ampollas, F. Ampollas y Vial</a></ul>
+            <ul><a href="/modelador_light/kairos_colirios/">Kairos Colirios</a></ul>
+            <ul><a href="/modelador_light/kairos_cremas/">Kairos Cremas, Gel, Pomo, Pda.</a></ul>
+            <ul><a href="/modelador_light/kairos_parches/">Kairos Parches</a></ul>
+            <ul><a href="/modelador_light/kairos_shampoo/">Kairos Shampoo</a></ul>
+            <ul><a href="/modelador_light/kairos_supositorios/">Kairos Supositorios</a></ul>
+
+
+        </li>
+        <li>
+
+            <a href="/modelador_light/xt_pcce/lista_usuarios/">Listado de Validación PCCE</a>
+        </li>
+        <li>
+            <a href="/modelador_light/xt_pc/lista_usuarios/">Listado de Validación PC</a>
         </li>
 
+        <li>
+            <a href="/modelador_light/autocomplete">autocomplete</a> - ver todos los autocompletar registrados
+        </li>
+        {#        <li>#}
+        {#            <a href="/hvad_autocomplete/item/add/">hvad autocomplete</a> -#}
+        {#            demonstrates how to use translated autocompletes with#}
+        {#            <a href="https://github.com/kristianoellegaard/django-hvad"#}
+        {#               target="_blank">django-hvad</a>#}
+        {#        <li>#}
+        {#            <a href="/inlines_outside_admin/">inlines outside admin</a> - how to#}
+        {#            use#}
+        {#            inlines outside admin#}
+        {#        </li>#}
+        {#        <li>#}
+        {#            <a href="/just_javascript/">just javascript</a> - how to create#}
+        {#            a fully-working autocomplete just by javascript at client-side;#}
+        {#        </li>#}
     </ul>
+
 {% endblock %}
+
+

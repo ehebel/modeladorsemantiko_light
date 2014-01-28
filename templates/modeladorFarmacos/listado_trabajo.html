@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Listado de Trabajo</title>
+</head>
+<body>
+{% extends "base.html" %}
+{% block content %}
+
+    Se han encontrado {{ pendientes_mc|length }} MC con Bioequivalentes
+
+    <table border=3 cellpadding=5>
+
+        <tr>
+            <th>xt_mc</th>
+            <th>xt_pc</th>
+            <th>xt_pcce</th>
+            <th>referente</th>
+        </tr>
+        {% for item in pendientes_mc %}
+            <tr>
+                <td rowspan={{ item.xt_pc_set.all|length }}>
+                    <a href="/modelador_light/admin/modeladorFarmacos/xt_mc/{{ item.id_xt_mc }}">{{ item.descripcion }}</a>
+                    {% for pc in item.xt_pc_set.all %}
+                        </td>
+                        <td>
+                            <a href="/modelador_light/admin/modeladorFarmacos2/xt_pc/{{ pc.id_xt_pc }}">{{ pc.descripcion }}</a>
+                        </td>
+                        <td>
+                            {% for pcce in pc.xt_pcce_set.all %}
+                                <li><a href="/modelador_light/admin/modeladorFarmacos/xt_pcce/{{ pcce.id_xt_pcce }}">{{ pcce.descripcion }} [{{ pcce.id_xt_mcce.get_tipo_display }}]</a>
+
+                                    {#                                {% for bar in pcce.id_presentacion_kairos.id_kairos_precio.all %}#}
+                                    {#                                 ($ {{ bar.id_presentacion_kairos }} )#}
+                                    {#                                {% endfor %}#}
+
+                                </li>
+                            {% empty %}
+                                <a href="/modelador_light/admin/modeladorFarmacos/xt_pcce/">Sin PCCE!</a>
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            {% for foo in pc.equivalente.all %}
+                                <li><a href="/modelador_light/admin/modeladorFarmacos/xt_pc/{{ foo.id_xt_pc }}"> {{ foo.descripcion }} </a></li>
+                            {% empty %}
+                                {% if pc.id_xt_pc in bioeq_referentes %}
+                                    <span style="color: red">Referente</span>
+
+                                {% elif pc.id_xt_pc not in bioeq_referentes %}
+
+                                    <span style="color: #ff8c00">No Certificado</span>
+
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        </tr>
+                        <tr>
+                    {% endfor %}
+        {% endfor %}
+        </tr>
+    </table>
+
+    <div class="pagination">
+        {% if pendientes_mc.has_previous %}
+            <a href="?page={{ pendientes_mc.previous_page_number }}">&#171 Anterior</a>
+        {% endif %}
+        {% for pg in pendientes_mc.paginator.page_range %}
+            {% if pendientes_mc.number == pg %}
+                <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
+            {% else %}
+                <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
+            {% endif %}
+        {% endfor %}
+        {% if pendientes_mc.has_next %}
+            <span><a href="?page={{ pendientes_mc.next_page_number }}">Siguiente &#187;</a></span>
+        {% endif %}
+    </div>
+
+    {% if var in bioeq_referentes %}
+
+    {% endif %}
+
+    <div>
+        {% for baz in bioeq_referentes %}
+            {{ baz.referencia }}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+</body>
+</html>

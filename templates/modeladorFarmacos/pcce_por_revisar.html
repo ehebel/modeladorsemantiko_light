@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>PCCE</h1>
+
+    <ul>
+        {% for pcce in object_list %}
+            <li class="pcce">
+                <a href="{{ pcce.get_absolute_url }}">{{ pcce.descripcion }}</a>
+
+                (<a href="{% url 'pcce_editar' pk=pcce.id_xt_pcce %}">editar</a>)
+
+
+            </li>
+        {% endfor %}
+    </ul>
+
+
+
+{% endblock %}
+
+</body>
+</html>

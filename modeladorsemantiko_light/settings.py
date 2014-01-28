@@ -76,7 +76,7 @@ STATIC_URL = '/modelador_light/static/'
 # Additional locations of static files
 
 
-STATICFILES_DIRS = (os.path.join(PROJECT_DIR, 'static'),)
+STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__), 'static',),)
 
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'modeloNanda',
     'modeloNic',
     'modeloNoc',
+    'modeladorFarmacos',
 )
 
 # A sample logging configuration. The only tangible logging

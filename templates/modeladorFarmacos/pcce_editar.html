@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block branding %}{% endblock %}
+
+{% block content %}
+    <h1>Editar PCCE</h1>
+
+    <form action="{{ action }}" method="POST">
+        {% csrf_token %}
+        <ul>
+            {{ form.as_ul }}
+        </ul>
+        <input id="save_pcce" type="submit" value="Grabar" />
+    </form>
+
+    <a href="{% url 'pcce_lista' %}">Volver a la Lista</a>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+    {% include 'autocomplete_light/static.html' %}
+
+{% endblock %}
+
+
