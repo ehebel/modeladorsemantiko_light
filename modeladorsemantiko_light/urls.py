@@ -13,6 +13,7 @@ from modeloNanda.api import EntryResource, UserResource
 from tastypie.api import Api
 
 from modeladorFarmacos.views import *
+import modeladorFarmacos.views
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -36,7 +37,21 @@ urlpatterns = patterns('',
     (r'^modelador_light/$', generic.TemplateView.as_view(template_name='index.html')),
 
 
-#    (r'^modelador/catalogo/$', lista_mc),
+
+    url(r'^modelador_light/xt_pcce/lista_usuarios/$', modeladorFarmacos.views.VistaListaPCCECreadores.as_view(),
+        name='creadores_lista',),
+
+    url(r'^modelador_light/xt_pcce/lista_usuarios/(\w+)/$', modeladorFarmacos.views.VistaUsuarioCreadorPCCE.as_view()),
+
+    url(r'^modelador_light/xt_pc/lista_usuarios/$', modeladorFarmacos.views.VistaListaPCCreadores.as_view(),
+        name='creadores_lista',),
+
+    url(r'^modelador_light/xt_pc/lista_usuarios/(\w+)/$', modeladorFarmacos.views.VistaUsuarioCreadorPC.as_view()),
+
+
+
+
+    #    (r'^modelador/catalogo/$', lista_mc),
     (r'^modelador_light/pendientes/$', pendientes),
 
 
