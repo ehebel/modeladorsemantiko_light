@@ -10,7 +10,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Esteban Hebel', 'ehebel@alemana.cl'),
 )
 
 MANAGERS = ADMINS
@@ -39,7 +39,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-cl'
 
 SITE_ID = 1
 
@@ -76,7 +76,10 @@ STATIC_URL = '/modelador_light/static/'
 # Additional locations of static files
 
 
-STATICFILES_DIRS = (os.path.join(os.path.dirname(__file__), 'static',),)
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'static',),
+#    '/Users/ehebel/PycharmProjects/modeladorsemantiko_light/static',
+    )
 
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
@@ -136,6 +139,7 @@ INSTALLED_APPS = (
     'modeloNic',
     'modeloNoc',
     'modeladorFarmacos',
+    'efectorescas',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -143,6 +147,7 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -170,6 +175,8 @@ LOGGING = {
 
 LOGIN_REDIRECT_URL = '/modelador_light/'
 
+
+LOGIN_URL = 'django.contrib.auth.views.login'
 
 try:
     from modeladorsemantiko_light.local_settings import *

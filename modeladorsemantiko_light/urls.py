@@ -28,6 +28,9 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^modelador_light/admin/doc/', include('django.contrib.admindocs.urls')),
 
+    url(r'^modelador_light/login/$', 'django.contrib.auth.views.login'),
+    url(r'^modelador_light/logout/$', 'django.contrib.auth.views.logout'),
+
     # Uncomment the next line to enable the admin:
     url(r'^modelador_light/admin/', include(admin.site.urls)),
 
