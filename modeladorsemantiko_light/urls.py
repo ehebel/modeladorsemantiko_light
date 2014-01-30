@@ -4,6 +4,8 @@ from django.conf.urls import patterns, include, url
 from django.views import generic
 
 import autocomplete_light
+from efectorescas.views import efectoresVistaImagenes
+
 autocomplete_light.autodiscover()
 
 from django.contrib import admin
@@ -70,6 +72,9 @@ urlpatterns = patterns('',
     (r'^modelador_light/kairos_parches/$', kairos_parches),
     (r'^modelador_light/kairos_shampoo/$', kairos_shampoo),
     (r'^modelador_light/kairos_supositorios/$', kairos_supositorios),
+
+    ###Efectores CAS
+    (r'modelador_light/efectores/imagenes/$', efectoresVistaImagenes)
 
 )
 

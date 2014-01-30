@@ -78,7 +78,7 @@ STATIC_URL = '/modelador_light/static/'
 
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(__file__), 'static',),
-#    '/Users/ehebel/PycharmProjects/modeladorsemantiko_light/static',
+    '/home1/semantik/django_proyectos/modeladorsemantiko_light/static',
     )
 
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
