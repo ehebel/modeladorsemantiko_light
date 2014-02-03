@@ -218,44 +218,6 @@ class kairos_texto_producto(models.Model):
 
 #########################################################################
 
-## ##-
-## table 'xt_unidad'
-## unidad de dosis de extension
-## ##-
-
-#
-#
-#class xt_unidad (models.Model):
-#    OPCIONES_ESTADO = ((0, 'Vigente'),(1, 'No Vigente'))
-#
-#    id_xt_unidad = models.AutoField(primary_key=True)
-#
-#    descripcion = models.CharField(max_length=255)
-#
-#    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
-#    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
-#    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
-#    usuario_ult_mod = models.ForeignKey(User, null=True, blank=True, editable=False, related_name='%(app_label)s_%(class)s_related_modif')
-#
-#    estado = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_ESTADO, null=True)
-#
-##    '''
-##    Terminos que salen desde ITServer
-##    '''
-#    sn_descriptionid = models.CharField(max_length=20, null=True, blank=True, verbose_name=u'SNOMED-CT DescriptionID')
-#    sn_term =   models.CharField(max_length=255, verbose_name=u'SNOMED-CT Termino')
-#
-#    hiba_descriptionid = models.CharField(max_length=20, null=True, blank=True)
-#    hiba_term = models.CharField(max_length=255, null=True, blank=True)
-#
-#    observacion = models.CharField(max_length=255, blank=True, null=True)
-#    cl_concepto = models.CharField(max_length=20, blank=True, null=True)
-#
-#    def __unicode__(self):
-#        return self.descripcion
-#    class Meta:
-#        ordering=['id_xt_unidad']
-#        verbose_name_plural ='XT unidad de dosis'
 
 class xt_unidad_dosis_unitaria (models.Model):
 

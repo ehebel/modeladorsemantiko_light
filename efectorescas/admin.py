@@ -60,7 +60,7 @@ class DescInLine(admin.TabularInline):
 
 class ConceptAdmin(admin.ModelAdmin):
     list_filter = ['revisado','dominio','pedible']
-    list_display = ['fsn','descripciones','revisado']
+    list_display = ['fsn','descripciones','get_areas']
     inlines = DescInLine,ConceptosAreaInline
     actions = [export_as_csv]
     search_fields = ['fsn',]
@@ -121,6 +121,8 @@ admin.site.register(descripcion,descripcionAdmin)
 
 
 class efectorareaAdmin(admin.ModelAdmin):
+    form = autocomplete_light.modelform_factory(efector_codigoporarea)
+
     list_display = ('id','efector','conceptoscasporarea')
     ordering = ('id',)
     raw_id_fields = ('conceptoscasporarea',)

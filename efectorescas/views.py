@@ -4,7 +4,7 @@ from django.template import RequestContext
 from efectorescas.models import concepto
 
 def efectoresVistaImagenes(request):
-    img_list = concepto.objects.filter(dominio__exact=1).all()
+    img_list = concepto.objects.filter(dominio__exact=1).order_by('fsn').all()
 
     paginator = Paginator(img_list, 100)
 

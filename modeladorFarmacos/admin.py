@@ -653,7 +653,7 @@ class pcAdmin(admin.ModelAdmin):
         else:
             return formset.save()
 
-admin.site.register(xt_pc,  pcAdmin)
+admin.site.register(xt_pc , pcAdmin)
 
 #
 class pcceAdmin(admin.ModelAdmin):
@@ -853,11 +853,35 @@ class ffAdmin(admin.ModelAdmin):
     list_display = ['descripcion','forma_agrupada','estado']
     list_filter = ['estado','forma_agrupada']
     search_fields = ['descripcion']
+
     def save_model(self, request, obj, form, change):
 
         if not hasattr(obj, 'usuario_creador'):
             obj.usuario_creador = request.user
         obj.save()
+
+        instance = form.save(commit=False)
+
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+
+    def save_formset(self, request, form, formset, change):
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == xt_forma_farm:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
 
 admin.site.register(xt_forma_farm,ffAdmin)
 
@@ -1017,6 +1041,36 @@ admin.site.register(xt_unidad_medida_cant,umcAdmin)
 class formaAgrupadaAdmin(admin.ModelAdmin):
     search_fields = ['descripcion',]
     list_display = ['descripcion','estado']
+
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+
+    def save_formset(self, request, form, formset, change):
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == xt_forma_agrupada:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
 admin.site.register(xt_forma_agrupada,formaAgrupadaAdmin)
 
 class kairosTxtAdmin(admin.ModelAdmin):

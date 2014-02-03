@@ -7,11 +7,17 @@ class concepto(models.Model):
     revisado = models.BooleanField()
     dominio = models.IntegerField(choices=OPCIONES_DOMINIO)
     pedible = models.BooleanField()
+    dominio_nucleo = models.IntegerField(choices=OPCIONES_DOMINIO)
     def descripciones(objeto):
         return '<br/>'.join(c.termino for c in objeto.descripcion_set.order_by('id')[:4])
 
     descripciones.allow_tags = True
     descripciones.short_description = 'Descripcion'
+
+    def get_areas(self):
+        return '<br/>'.join(c.descripcion for c in self.cas_area_set.order_by('id')[:4])
+    get_areas.allow_tags = True
+    get_areas.short_description = 'Areas'
     def __unicode__(self):
         return self.fsn
     class Meta:
