@@ -23,14 +23,13 @@
 </head>
 <body>
 
-{% extends "base.html" %}
 
-{% block branding %}
-    <h1>Efectores Imágenes</h1>
-{% endblock %}
 
 {% block content %}
+{#    <p>Usted buscó: <strong>{{ query }}</strong></p>#}
 
+{% if modelados_imagenes %}
+    <p>Encontramos {{ modelados_imagenes|length }} exámenes.</p>
 
     <table border=3 cellpadding=3 width=100%>
         <tr>
@@ -47,50 +46,51 @@
 
             <td rowspan={% if item.cas_area_set.all|length == 0 %}1{% else %}{{ item.cas_area_set.all|length }}{% endif %}>
 
-            {% for desc in item.descripcion_set.all %} <li>{{ desc.termino }} </li>{% endfor %}
+                {% for desc in item.descripcion_set.all %} <li>{{ desc.termino }} </li>{% endfor %}
             </td>
             {% for bar in item.conceptoscasporarea_set.all %}
 
-                    <td>
-                        {{ bar.area }}
-                    </td>
+                <td>
+                    {{ bar.area }}
+                </td>
 
 
-            <td>
+                <td>
 
 
 
                     {% for test in bar.efector_codigoporarea_set.all %}
                         <a href="/modelador_light/admin/efectorescas/efector/{{ test.efector.ExamCode }}"><li>[{{ test.efector.ExamCode }}]{{ test.efector.ExamName }}</li></a>
-{#                    {% endfor %}#}
-                {% endfor %}
-            </td>
+                        {#                    {% endfor %}#}
+                    {% endfor %}
+                </td>
 
-        </tr>
-        {% endfor %}
+                </tr>
+            {% endfor %}
     {% endfor %}
     </table>
+{% else %}
+    No hubo coincidencias
+{% endif %}
 
-
-
-    <div class="pagination">
-        {% if modelados_imagenes.has_previous %}
-            <a href="?page={{ modelados_imagenes.previous_page_number }}">&#171 Anterior</a>
-        {% endif %}
-        {% for pg in modelados_imagenes.paginator.page_range %}
-            {% if modelados_imagenes.number == pg %}
-                <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
-            {% else %}
-                <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
-            {% endif %}
-        {% endfor %}
-        {% if modelados_imagenes.has_next %}
-            <span><a href="?page={{ modelados_imagenes.next_page_number }}">Siguiente &#187;</a></span>
-        {% endif %}
-    </div>
+{##}
+{#    <div class="pagination">#}
+{#        {% if modelados_imagenes.has_previous %}#}
+{#            <a href="?page={{ modelados_imagenes.previous_page_number }}">&#171 Anterior</a>#}
+{#        {% endif %}#}
+{#        {% for pg in modelados_imagenes.paginator.page_range %}#}
+{#            {% if modelados_imagenes.number == pg %}#}
+{#                <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>#}
+{#            {% else %}#}
+{#                <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#        {% if modelados_imagenes.has_next %}#}
+{#            <span><a href="?page={{ modelados_imagenes.next_page_number }}">Siguiente &#187;</a></span>#}
+{#        {% endif %}#}
+{#    </div>#}
 
 {% endblock %}
 
 
 </body>
-</html>

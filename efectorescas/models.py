@@ -4,10 +4,10 @@ from django.db import models
 class concepto(models.Model):
     OPCIONES_DOMINIO = ((1, 'Imagenes'),(2, 'Procedimientos'),(3,'Laboratorio'),(4,'Takion'))
     fsn = models.CharField('Fully Specified Name',max_length=255, )
-    revisado = models.BooleanField()
-    dominio = models.IntegerField(choices=OPCIONES_DOMINIO)
-    pedible = models.BooleanField()
-    dominio_nucleo = models.IntegerField(choices=OPCIONES_DOMINIO)
+    revisado = models.BooleanField(default=1)
+    dominio = models.IntegerField(choices=OPCIONES_DOMINIO, default=1)
+    pedible = models.BooleanField(default=1)
+    dominio_nucleo = models.IntegerField(choices=OPCIONES_DOMINIO, default=1)
     def descripciones(objeto):
         return '<br/>'.join(c.termino for c in objeto.descripcion_set.order_by('id')[:4])
 
@@ -46,19 +46,6 @@ class cas_lugar(models.Model):
         ordering=['id']
         verbose_name_plural = "Lugares CAS"
 
-class conceptosCASporarea(models.Model):
-    concepto = models.ForeignKey(concepto)
-    area = models.ForeignKey(cas_area)
-    def get_efectorxarea(objeto):
-        pass
-    get_efectorxarea.allow_tags = True
-    get_efectorxarea.short_description = 'Efectores por Concepto-Area (En desarrollo)'
-    def __unicode__(self):
-        return "%s | %s" % (self.concepto.fsn, self.area.descripcion)
-    class Meta:
-        ordering=['id']
-        verbose_name_plural = "Conceptos CAS por Area"
-
 
 class descripcion(models.Model):
     OPCIONES_TIPO = (
@@ -77,6 +64,21 @@ class descripcion(models.Model):
         verbose_name_plural = "descripciones"
 
 
+class conceptosCASporarea(models.Model):
+    concepto = models.ForeignKey(concepto)
+    area = models.ForeignKey(cas_area)
+
+    def get_efectorxarea(objeto):
+        return '<br/>'.join(c.efector.ExamCode for c in objeto.efector_codigoporarea_set.order_by('id')[:4])
+    get_efectorxarea.allow_tags = True
+    get_efectorxarea.short_description = 'Efectores'
+
+    def __unicode__(self):
+        return "%s | %s" % (self.concepto.fsn, self.area.descripcion)
+    class Meta:
+        ordering=['id']
+        verbose_name_plural = "Conceptos CAS por Area"
+
 
 class efector(models.Model):
     OPCIONES_DOMINIO = ((1, 'Imagenes'),(2, 'Procedimientos'),(3,'Laboratorio'))
@@ -84,14 +86,17 @@ class efector(models.Model):
     ExamName = models.CharField(max_length=255)
     dominio = models.IntegerField(choices=OPCIONES_DOMINIO)
     codigoporarea = models.ManyToManyField(conceptosCASporarea, through='efector_codigoporarea')
+
     def get_conceptosporarea(objeto):
         return '<br/>'.join(c.concepto.fsn for c in objeto.codigoporarea.order_by('id')[:4])
     get_conceptosporarea.allow_tags = True
     get_conceptosporarea.short_description = 'Conceptos'
+
     def get_areas(objeto):
         return '<br/>'.join(c.area.descripcion for c in objeto.codigoporarea.order_by('id')[:4])
     get_areas.allow_tags = True
     get_areas.short_description = 'Areas'
+
     def __unicode__(self):
         return '%s | %s' % (self.ExamCode,self.ExamName)
     class Meta:

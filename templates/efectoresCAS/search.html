@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Buscar Examenes{% endblock %}
+{% block head %}Buscar Examenes{% endblock %}
+{% block content %}
+
+
+    <form id="search-form" method="get" action=".">
+    {{ form.as_p }}
+    <input type="submit" value="Buscar" />
+
+    </form>
+    <div id="search-results">
+    {%  if show_results %}
+        {% include 'efectoresCAS/vista_imagenes.html' %}
+    {% endif %}
+    </div>
+
+{% endblock %}

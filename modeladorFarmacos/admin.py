@@ -15,6 +15,8 @@ from django.contrib.admin import FieldListFilter, SimpleListFilter
 from django.utils.encoding import force_unicode
 
 
+
+
 class UsuarioFilter(SimpleListFilter):
     title = 'Usuario creador' # or use _('country') for translated title
     parameter_name = 'usuario'
@@ -128,7 +130,7 @@ class bioeqAdminInline(admin.TabularInline):
 class xt_sustanciaAdmin (admin.ModelAdmin):
     list_display = ['id_xt_sust','descripcion','riesgo_teratogenico']
     list_filter = ['revisado','consultar','estado','riesgo_teratogenico']
-    search_fields = ['descripcion',]
+    search_fields = ['descripcion','id_xt_sust']
     ordering = ['descripcion',]
     def add_view(self, request, *args, **kwargs):
         result = super(xt_sustanciaAdmin, self).add_view(request, *args, **kwargs )
@@ -195,6 +197,14 @@ class xt_sustanciaAdmin (admin.ModelAdmin):
         else:
             return formset.save()
 
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(xt_sustanciaAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_sustancia,xt_sustanciaAdmin)
 
 
@@ -209,7 +219,7 @@ class mcAdmin (admin.ModelAdmin):
 
     inlines = [SustanciaClinicoInline]
 
-    search_fields = ['descripcion']
+    search_fields = ['descripcion','id_xt_mc']
 
     list_display = ['id_xt_mc','descripcion'
         ,'termino_autogenerado'
@@ -317,6 +327,14 @@ class mcAdmin (admin.ModelAdmin):
         else:
             return formset.save()
 
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(mcAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_mc,  mcAdmin)
 
 
@@ -327,7 +345,7 @@ class mbAdmin(admin.ModelAdmin):
     form = autocomplete_light.modelform_factory(xt_mb)
     inlines = [SustanciaBasicoInline,]
     ordering = ['descripcion',]
-    search_fields = ['descripcion']
+    search_fields = ['descripcion','xt_id_mb']
     list_display = ['xt_id_mb','descripcion','get_sustancia','estado','sensible_mayusc']
     list_filter = ['revisado','consultar','estado']
     list_display_links = ['xt_id_mb','descripcion']
@@ -384,6 +402,7 @@ class mbAdmin(admin.ModelAdmin):
                 self.message_user(request, msg)
                 return HttpResponseRedirect("../%s/" % next[0].pk)
         return super(mbAdmin, self).response_change(request, obj)
+
     def save_model(self, request, obj, form, change):
 
         if not hasattr(obj, 'usuario_creador'):
@@ -403,13 +422,21 @@ class mbAdmin(admin.ModelAdmin):
                 instance.usuario_ult_mod = request.user
             instance.usuario_ult_mod = request.user
             instance.save()
-        if formset.model == xt_mc:
+        if formset.model == xt_mb:
             instances = formset.save(commit=False)
             map(set_user, instances)
             formset.save_m2m()
             return instances
         else:
             return formset.save()
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(mbAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_mb,  mbAdmin)
 
@@ -432,7 +459,7 @@ class mcceAdmin(admin.ModelAdmin):
 
     list_filter = ['revisado','consultar','estado','tipo','unidad_medida_cant','volumen_total_u'
     ]
-    search_fields = ['descripcion',]
+    search_fields = ['descripcion','id_xt_mcce']
     readonly_fields=('id_xt_mcce',)
 
     actions = [export_as_csv]
@@ -516,6 +543,15 @@ class mcceAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(mcceAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_mcce,mcceAdmin)
 
 
@@ -527,7 +563,7 @@ class pcAdmin(admin.ModelAdmin):
         models.CharField: {'widget': TextInput(attrs={'size':'100'})}
     }
     inlines = [bioeqAdminInline,]
-    search_fields = ['descripcion',]
+    search_fields = ['descripcion','id_xt_pc']
     list_display = ['id_xt_pc','descripcion','id_xt_mc','id_xt_lab','forma_farm_extendida','usuario_creador'] #TODO BOOL Bioequivalente
     list_filter = ['estado','revisado','consultar'
         ,'usuario_creador__username'
@@ -653,6 +689,14 @@ class pcAdmin(admin.ModelAdmin):
         else:
             return formset.save()
 
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(pcAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_pc , pcAdmin)
 
 #
@@ -680,8 +724,11 @@ class pcceAdmin(admin.ModelAdmin):
         }),
         )
 
-    list_display = ['id_xt_pcce','descripcion','usuario_creador'] #TODO BOOL Bioequivalente
-    search_fields = ['descripcion',]
+    list_display = ['id_xt_pcce'
+                    ,'descripcion'
+#                    ,'usuario_creador'
+                     ]
+    search_fields = ['descripcion','id_xt_pcce']
     readonly_fields=('id_xt_pcce',)
     actions = [export_as_csv]
     radio_fields = {
@@ -754,6 +801,13 @@ class pcceAdmin(admin.ModelAdmin):
         else:
             return formset.save()
 
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(pcceAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_pcce,pcceAdmin)
 
@@ -825,16 +879,35 @@ class xtlabAdmin(admin.ModelAdmin):
                 pass
 
         return result
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(xtlabAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_laboratorio,xtlabAdmin)
 
 class uduAdmin(admin.ModelAdmin):
     list_display = ['pk','descripcion','estado']
     search_fields = ['descripcion']
+    list_filter = ['estado']
     def save_model(self, request, obj, form, change):
 
         if not hasattr(obj, 'usuario_creador'):
             obj.usuario_creador = request.user
         obj.save()
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(uduAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_unidad_dosis_unitaria,uduAdmin)
 
 
@@ -846,7 +919,17 @@ class umuAdmin(admin.ModelAdmin):
         if not hasattr(obj, 'usuario_creador'):
             obj.usuario_creador = request.user
         obj.save()
-admin.site.register(xt_unidad_medida_unitaria,uduAdmin)
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(umuAdmin,self).changelist_view(request, extra_context=extra_context)
+
+
+admin.site.register(xt_unidad_medida_unitaria,umuAdmin)
 
 
 class ffAdmin(admin.ModelAdmin):
@@ -882,6 +965,13 @@ class ffAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(ffAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_forma_farm,ffAdmin)
 
@@ -892,6 +982,14 @@ class condVentaAdmin(admin.ModelAdmin):
         if not hasattr(obj, 'usuario_creador'):
             obj.usuario_creador = request.user
         obj.save()
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(condVentaAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_condicion_venta,condVentaAdmin)
 
 class upAdmin(admin.ModelAdmin):
@@ -924,6 +1022,14 @@ class upAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(upAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_unidad_potencia,upAdmin)
 
 
@@ -954,12 +1060,25 @@ class gfpAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
-admin.site.register(xt_gfp,gfpAdmin)
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(gfpAdmin,self).changelist_view(request, extra_context=extra_context)
+
+
+    list_display = ['descripcion','sensible_mayusc','estado']
+    list_filter = ['sensible_mayusc','estado','revisado','consultar']
+    search_fields = ['descripcion']
+
+admin.site.register(xt_gfp , gfpAdmin)
 
 class fpAdmin(admin.ModelAdmin):
     search_fields = ['descripcion']
     list_display = ['id_xt_fp', 'descripcion','id_gfp_xt']
-    list_filter = ['familia_generica',('id_gfp_xt', IsNullFieldListFilter)]
+    list_filter = ['familia_generica',('id_gfp_xt', IsNullFieldListFilter),'estado']
 
     def save_model(self, request, obj, form, change):
 
@@ -987,6 +1106,14 @@ class fpAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(fpAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_fp,fpAdmin)
 
 class bioeqAdmin(admin.ModelAdmin):
@@ -1004,7 +1131,9 @@ admin.site.register(atc,atcAdmin)
 
 
 class umcAdmin(admin.ModelAdmin):
-    list_display = ['pk','descripcion','estado']
+    list_display = [
+        'pk','descripcion','estado'
+    ]
     search_fields = ['descripcion']
     def save_model(self, request, obj, form, change):
 
@@ -1019,6 +1148,7 @@ class umcAdmin(admin.ModelAdmin):
         instance.save()
         form.save_m2m()
         return instance
+
     def save_formset(self, request, form, formset, change):
         def set_user(instance):
             if not instance.usuario_ult_mod:
@@ -1032,6 +1162,15 @@ class umcAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(umcAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_unidad_medida_cant,umcAdmin)
 
 
@@ -1070,6 +1209,13 @@ class formaAgrupadaAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(formaAgrupadaAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_forma_agrupada,formaAgrupadaAdmin)
 
@@ -1118,6 +1264,14 @@ class xtSaborAdmin(admin.ModelAdmin):
         instance.save()
         form.save_m2m()
         return instance
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.has_key('estado__exact'):
+            q = request.GET.copy()
+            q['estado__exact'] = '0'
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+        return super(xtSaborAdmin,self).changelist_view(request, extra_context=extra_context)
+
 admin.site.register(xt_sabor,xtSaborAdmin)
 
 

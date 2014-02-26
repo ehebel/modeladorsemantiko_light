@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Buscar Examenes{% endblock %}
+{% block head %}Buscar Examenes{% endblock %}
+
+{% block branding %}
+    <h1>Efectores Imágenes</h1>
+{% endblock %}
+
+{% block content %}
+
+
+    <form id="search-form" method="get" action=".">
+        {{ form }}
+        <input type="submit" value="Buscar" />
+    </form>
+
+    <div id="search-results">
+        {%  if show_results %}
+            {% include 'efectoresCAS/search_results.html' %}
+        {% endif %}
+    </div>
+
+{% endblock %}

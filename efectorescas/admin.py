@@ -45,18 +45,23 @@ def export_as_csv(modeladmin, request, queryset):
     return response
 export_as_csv.short_description = "Exportar elementos seleccionados como CSV"
 
-class ConceptosAreaInline(admin.TabularInline):
-    model = cas_area.conceptosporarea.through
-
-class EfectoresAreaInline(admin.TabularInline):
-    model = efector_codigoporarea
-    form = autocomplete_light.modelform_factory(efector)
-    raw_id_fields = ['efector',]
-
 
 class DescInLine(admin.TabularInline):
     model = descripcion
 
+
+class ConceptosAreaInline(admin.TabularInline):
+    model = cas_area.conceptosporarea.through
+
+#
+class EfectoresAreaInline(admin.TabularInline):
+    model = conceptosCASporarea
+##    form = autocomplete_light.modelform_factory(efector)
+#    raw_id_fields = ['efector',]
+
+class conceptoAreaInline2(admin.TabularInline):
+    model = efector.codigoporarea.through
+    form = autocomplete_light.modelform_factory(efector)
 
 class ConceptAdmin(admin.ModelAdmin):
     list_filter = ['revisado','dominio','pedible']
@@ -102,6 +107,7 @@ class ConceptAdmin(admin.ModelAdmin):
 admin.site.register(concepto,ConceptAdmin)
 
 
+
 class efectorAdmin(admin.ModelAdmin):
     form = autocomplete_light.modelform_factory(efector)
     list_display = ['ExamCode','ExamName','get_conceptosporarea','get_areas']
@@ -109,6 +115,7 @@ class efectorAdmin(admin.ModelAdmin):
     filter_vertical = ('codigoporarea',)
     search_fields = ['ExamCode','ExamName']
     actions = [export_as_csv]
+    inlines = EfectoresAreaInline,
 admin.site.register(efector,efectorAdmin)
 
 
@@ -120,14 +127,20 @@ class descripcionAdmin(admin.ModelAdmin):
 admin.site.register(descripcion,descripcionAdmin)
 
 
+
+
 class efectorareaAdmin(admin.ModelAdmin):
     form = autocomplete_light.modelform_factory(efector_codigoporarea)
 
-    list_display = ('id','efector','conceptoscasporarea')
+    list_display = ('id','efector'
+                    ,'conceptoscasporarea'
+        )
     ordering = ('id',)
     raw_id_fields = ('conceptoscasporarea',)
     search_fields = ('efector__ExamName',)
-admin.site.register(efector_codigoporarea,efectorareaAdmin)
+
+admin.site.register(efector_codigoporarea,efectorareaAdmin
+)
 
 
 class concCasAreaAdmin(admin.ModelAdmin):
@@ -156,17 +169,21 @@ class concCasAreaAdmin(admin.ModelAdmin):
             msg = (_('The %(name)s "%(obj)s" was changed successfully.') %
                    {'name': force_unicode(obj._meta.verbose_name),
                     'obj': force_unicode(obj)})
-            next = obj.__class__.objects.filter(id_xt_sust__gt=obj.id_xt_sust).order_by('id_xt_sust')[:1]
+            next = obj.__class__.objects.filter(id__gt=obj.conceptosCASporarea).order_by('id')[:1]
             if next:
                 self.message_user(request, msg)
                 return HttpResponseRedirect("../%s/" % next[0].pk)
         return super(concCasAreaAdmin, self).response_change(request, obj)
 
-
-    inlines = EfectoresAreaInline,
-    list_display = ['concepto','area','get_efectorxarea']
+    inlines = conceptoAreaInline2,
+    list_display = ['concepto'
+        ,'get_efectorxarea'
+        ,'area'
+    ]
     list_filter = ['area']
-admin.site.register(conceptosCASporarea,concCasAreaAdmin)
+    search_fields = ['concepto__fsn']
+    ordering = ('id',)
+admin.site.register(conceptosCASporarea ,concCasAreaAdmin)
 
 class areasAdmin(admin.ModelAdmin):
     list_display = ['descripcion','conceptos']
