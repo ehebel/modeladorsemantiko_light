@@ -106,6 +106,6 @@ class efector(models.Model):
 
 class efector_codigoporarea(models.Model):
     efector = models.ForeignKey(efector)
-    conceptoscasporarea = models.ForeignKey(conceptosCASporarea)
+    conceptoscasporarea = models.ForeignKey(conceptosCASporarea, verbose_name='Concepto x Area')
     def __unicode__(self):
-        return u'%s' % self.id
+        return u'%s' % self.efector

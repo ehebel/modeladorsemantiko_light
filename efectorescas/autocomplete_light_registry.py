@@ -8,11 +8,18 @@ autocomplete_light.register(efector,
         'data-widget-minimum-characters': 1,
         })
 
-#autocomplete_light.register(conceptosCASporarea,
-#    search_fields=['concepto'],
-#    attrs={
-#        'placeholder': 'Concepto-Area',
-#        'data-widget-minimum-characters': 1,
-#        })
+autocomplete_light.register(conceptosCASporarea,
+    search_fields=['concepto__fsn'],
+    attrs={
+        'placeholder': 'Concepto-Area',
+        'data-widget-minimum-characters': 1,
+        })
 
+
+autocomplete_light.register(concepto,
+    search_fields=['fsn',],
+    attrs={
+        'placeholder': 'descripcion',
+        'data-widget-minimum-characters': 1,
+        })
 __author__ = 'ehebel'

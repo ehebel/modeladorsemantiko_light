@@ -61,7 +61,7 @@
 
 
                     {% for test in bar.efector_codigoporarea_set.all %}
-                        <a href="/modelador_light/admin/efectorescas/efector/{{ test.efector.ExamCode }}"><li>[{{ test.efector.ExamCode }}]{{ test.efector.ExamName }}</li></a>
+                        <li>[{{ test.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ test.id }}">{{ test.efector.ExamName }}</li></a>
 {#                    {% endfor %}#}
                 {% endfor %}
             </td>

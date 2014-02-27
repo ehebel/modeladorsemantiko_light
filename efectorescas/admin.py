@@ -11,8 +11,6 @@ from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
 
-import autocomplete_light
-autocomplete_light.autodiscover()
 
 def export_as_csv(modeladmin, request, queryset):
     """
@@ -53,11 +51,8 @@ class DescInLine(admin.TabularInline):
 class ConceptosAreaInline(admin.TabularInline):
     model = cas_area.conceptosporarea.through
 
-#
-class EfectoresAreaInline(admin.TabularInline):
-    model = conceptosCASporarea
-##    form = autocomplete_light.modelform_factory(efector)
-#    raw_id_fields = ['efector',]
+
+
 
 class conceptoAreaInline2(admin.TabularInline):
     model = efector.codigoporarea.through
@@ -106,20 +101,24 @@ class ConceptAdmin(admin.ModelAdmin):
         return super(ConceptAdmin, self).response_change(request, obj)
 admin.site.register(concepto,ConceptAdmin)
 
-
+#
+class EfectoresAreaInline(admin.TabularInline):
+    model = efector_codigoporarea
+    form = autocomplete_light.modelform_factory(efector)
 
 class efectorAdmin(admin.ModelAdmin):
-    form = autocomplete_light.modelform_factory(efector)
+#    form = autocomplete_light.modelform_factory(efector)
+#    filter_vertical = ('codigoporarea',)
+    inlines = EfectoresAreaInline,
     list_display = ['ExamCode','ExamName','get_conceptosporarea','get_areas']
     list_filter = ['dominio']
-    filter_vertical = ('codigoporarea',)
     search_fields = ['ExamCode','ExamName']
     actions = [export_as_csv]
-    inlines = EfectoresAreaInline,
 admin.site.register(efector,efectorAdmin)
 
 
 class descripcionAdmin(admin.ModelAdmin):
+    form = autocomplete_light.modelform_factory(descripcion)
     list_display = ['termino','tipodescripcion','id_concepto']
     list_filter = ['tipodescripcion']
     search_fields = ['termino',]
@@ -136,11 +135,10 @@ class efectorareaAdmin(admin.ModelAdmin):
                     ,'conceptoscasporarea'
         )
     ordering = ('id',)
-    raw_id_fields = ('conceptoscasporarea',)
+
     search_fields = ('efector__ExamName',)
 
-admin.site.register(efector_codigoporarea,efectorareaAdmin
-)
+admin.site.register(efector_codigoporarea,efectorareaAdmin)
 
 
 class concCasAreaAdmin(admin.ModelAdmin):

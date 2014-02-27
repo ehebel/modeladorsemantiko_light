@@ -42,4 +42,7 @@ def search(request):
                                             'modelados_imagenes': examenes,
                                             'show_results': show_results,
                                             })
+#    if request.GET.has_key('ajax'):
+#        return render_to_response('efectoresCAS/vista_imagenes.html', variables)
+#    else:
     return  render_to_response('efectoresCAS/search_form.html', variables)

@@ -46,21 +46,15 @@
 
             <td rowspan={% if item.cas_area_set.all|length == 0 %}1{% else %}{{ item.cas_area_set.all|length }}{% endif %}>
 
-                {% for desc in item.descripcion_set.all %} <li>{{ desc.termino }} </li>{% endfor %}
+                {% for desc in item.descripcion_set.all %} <li><a href="/modelador_light/admin/efectorescas/descripcion/{{ desc.id }}">{{ desc.termino }} </a></li>{% endfor %}
             </td>
             {% for bar in item.conceptoscasporarea_set.all %}
-
                 <td>
                     {{ bar.area }}
                 </td>
-
-
                 <td>
-
-
-
                     {% for test in bar.efector_codigoporarea_set.all %}
-                        <a href="/modelador_light/admin/efectorescas/efector/{{ test.efector.ExamCode }}"><li>[{{ test.efector.ExamCode }}]{{ test.efector.ExamName }}</li></a>
+                        <li>[{{ test.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector/{{ test.efector.ExamCode }}"> {{ test.efector.ExamName }}</a></li>
                         {#                    {% endfor %}#}
                     {% endfor %}
                 </td>
