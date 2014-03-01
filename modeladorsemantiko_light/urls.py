@@ -5,6 +5,7 @@ from django.views import generic
 
 import autocomplete_light
 from efectorescas.views import efectoresVistaImagenes, search
+from modeladorFarmacos.forms import bioeqForm
 
 autocomplete_light.autodiscover()
 
@@ -54,8 +55,18 @@ urlpatterns = patterns('',
     url(r'^modelador_light/xt_pc/lista_usuarios/(\w+)/$', modeladorFarmacos.views.VistaUsuarioCreadorPC.as_view()),
 
 
+##Vistas Para Creacion de Nuevos Bioequivalentes
+    url(r'^modelador_light/bioeq/$', modeladorFarmacos.views.VistaBioequivalente.as_view(),
+        name='bioeq-lista',),
+
+    url(r'^modelador_light/admin/modeladorFarmacos/xt_bioequivalente/add/$', generic.CreateView.as_view(model=xt_bioequivalente, form_class=bioeqForm, template_name='modeladorFarmacos/crea_bioequivalente.html'),
+        name='bioeq-nuevo',),
+
+    url(r'^modelador_light/admin/modeladorFarmacos/xt_bioequivalente/(?P<pk>\d+)/$', modeladorFarmacos.views.EditaBioequivalente.as_view(),
+        name='bioeq-editar',),
 
 
+##Creacion de productos Segun Kairos
     #    (r'^modelador/catalogo/$', lista_mc),
     (r'^modelador_light/pendientes/$', pendientes),
 
@@ -78,6 +89,7 @@ urlpatterns = patterns('',
 
 
     (r'^modelador_light/search-form/$', search),
+
 
 )
 

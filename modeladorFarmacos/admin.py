@@ -1118,8 +1118,17 @@ admin.site.register(xt_fp,fpAdmin)
 
 class bioeqAdmin(admin.ModelAdmin):
     form = autocomplete_light.modelform_factory(xt_bioequivalente)
-    list_display = ['id_xt_bioequivalente','referencia','bioequivalente']
+    list_display = ['pk', 'get_referente','get_equivalente']
     search_fields = ['referencia__descripcion','bioequivalente__descripcion']
+    list_filter = ['usuario_creador','usuario_ult_mod']
+
+    def get_referente(self, obj):
+        return obj.referencia.descripcion
+    get_referente.short_description = 'Referente'
+
+    def get_equivalente(self, obj):
+        return obj.bioequivalente.descripcion
+    get_equivalente.short_description = 'Bioequivalente'
 
 admin.site.register(xt_bioequivalente,bioeqAdmin)
 
@@ -1135,6 +1144,7 @@ class umcAdmin(admin.ModelAdmin):
         'pk','descripcion','estado'
     ]
     search_fields = ['descripcion']
+    list_filter = ['estado']
     def save_model(self, request, obj, form, change):
 
         if not hasattr(obj, 'usuario_creador'):

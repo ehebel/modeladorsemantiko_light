@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block branding %}{% endblock %}
+
+{% block content %}
+    <h1>Bioequivalentes</h1>
+    <a href="{% url "bioeq-nuevo" %}">Agregar Bioequivalentes</a>
+
+    <ul>
+        {% for producto in object_list %}
+            <li class="producto">{{ producto }}
+                (<a href="{% url "bioeq-editar" pk=producto.id_xt_bioequivalente %}">editar</a>)
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -1,3 +1,4 @@
+
 from django.core.urlresolvers import reverse
 from django.db import models
 import datetime
@@ -956,7 +957,7 @@ class xt_mcce (models.Model):
     id_xt_mc = models.ForeignKey(xt_mc, verbose_name='Medicamento Clinico')
 
     cantidad = models.IntegerField()
-    unidad_medida_cant = models.ForeignKey(xt_unidad_medida_cant, related_name='un_medida_cant')
+    unidad_medida_cant = models.ForeignKey(xt_unidad_medida_cant, limit_choices_to={'estado' : 0}, related_name='un_medida_cant')
 
     pack_multi_cant = models.IntegerField(null=True, blank=True)
     pack_multi_u = models.ForeignKey(xt_unidad_medida_cant, related_name='pack_multi_unidad',null=True, blank=True)
@@ -1078,4 +1079,5 @@ class xt_bioequivalente(models.Model):
     class Meta:
         ordering=['id_xt_bioequivalente']
         verbose_name_plural ='XT Productos Bioequivalentes'
+
 

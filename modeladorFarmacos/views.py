@@ -16,6 +16,8 @@ from modeladorFarmacos.models import kairos_productos\
 from modeladorFarmacos.forms import pcceForm
 
 
+
+
 class LoggedInMixin(object):
 
     @method_decorator(login_required)
@@ -40,6 +42,40 @@ def create(request):
     args['form'] = form
 
     return render_to_response('modeladorFarmacos/crear_pcce.html', args)
+
+
+
+class VistaBioequivalente(ListView):
+    model = xt_bioequivalente
+    template_name = 'modeladorFarmacos/lista_bioequivalentes.html'
+
+class CrearBioequivalente(CreateView):
+    model = xt_bioequivalente
+    template_name = 'modeladorFarmacos/crea_bioequivalente.html'
+    def get_success_url(self):
+        return reverse('bioeq-lista')
+
+#    def get_context_data(self, **kwargs):
+#        context = super(CrearBioequivalente, self).get_context_data(**kwargs)
+#        context['action'] = reverse('bioeq_nuevo')
+#
+#        return context
+
+class EditaBioequivalente(UpdateView):
+
+    model = xt_bioequivalente
+    template_name = 'modeladorFarmacos/edita_bioequivalente.html'
+
+    def get_success_url(self):
+        return reverse('bioeq-lista')
+
+    def get_context_data(self, **kwargs):
+
+        context = super(EditaBioequivalente, self).get_context_data(**kwargs)
+        context['action'] = reverse('bioeq_editar',
+            kwargs={'pk': self.get_object().id_xt_bioequivalente})
+
+        return context
 
 class VistaListaPCCECreadores(LoggedInMixin,ListView):
     model = xt_pcce
@@ -82,8 +118,6 @@ class VistaListaPCCE(LoggedInMixin, ListView):
 
         return xt_pcce.objects.filter(revisado__exact=0)
 
-
-
 class VistaCrearPCCE(CreateView):
     model = xt_pcce
     template_name = 'modeladorFarmacos/pcce_editar.html'
@@ -96,8 +130,6 @@ class VistaEditarPCCE(LoggedInMixin,UpdateView):
 
     model = xt_pcce
     template_name = 'modeladorFarmacos/pcce_editar.html'
-
-
 
     def get_success_url(self):
         return reverse('pcce_lista')
@@ -501,3 +533,4 @@ def kairos_supositorios(request):
     return render_to_response('modeladorFarmacos/kairos_supositorios.html'
         ,{'kpres_kairos':kairos_pres},
         context_instance=RequestContext(request))
+
