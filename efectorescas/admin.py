@@ -43,10 +43,31 @@ def export_as_csv(modeladmin, request, queryset):
     return response
 export_as_csv.short_description = "Exportar elementos seleccionados como CSV"
 
+class BaseAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.usuario_creador = request.user
+
+        obj.usuario_ult_mod = request.user
+        obj.save()
+
+
+    def save_formset(self, request, form, formset, change):
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            if isinstance(instance, concepto):
+            #Check if it is the correct type of inline
+                if not instance.usuario_creador:
+                    instance.usuario_creador = request.user
+
+                instance.usuario_ult_mod = request.user
+                instance.save()
+
+
 
 class DescInLine(admin.TabularInline):
     model = descripcion
-
 
 class ConceptosAreaInline(admin.TabularInline):
     model = cas_area.conceptosporarea.through
@@ -99,6 +120,39 @@ class ConceptAdmin(admin.ModelAdmin):
                 self.message_user(request, msg)
                 return HttpResponseRedirect("../%s/" % next[0].pk)
         return super(ConceptAdmin, self).response_change(request, obj)
+
+
+
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == concepto:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
+
+
 admin.site.register(concepto,ConceptAdmin)
 
 #
@@ -114,6 +168,35 @@ class efectorAdmin(admin.ModelAdmin):
     list_filter = ['dominio']
     search_fields = ['ExamCode','ExamName']
     actions = [export_as_csv]
+
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == efector:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
 admin.site.register(efector,efectorAdmin)
 
 
@@ -123,6 +206,32 @@ class descripcionAdmin(admin.ModelAdmin):
     list_filter = ['tipodescripcion']
     search_fields = ['termino',]
     actions = [export_as_csv]
+
+
+    def save_model(self, request, obj, form, change):
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == descripcion:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
 admin.site.register(descripcion,descripcionAdmin)
 
 
@@ -137,6 +246,34 @@ class efectorareaAdmin(admin.ModelAdmin):
     ordering = ('id',)
 
     search_fields = ('efector__ExamName',)
+
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == efector_codigoporarea:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
 
 admin.site.register(efector_codigoporarea,efectorareaAdmin)
 
@@ -181,10 +318,89 @@ class concCasAreaAdmin(admin.ModelAdmin):
     list_filter = ['area']
     search_fields = ['concepto__fsn']
     ordering = ('id',)
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == conceptosCASporarea:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
 admin.site.register(conceptosCASporarea ,concCasAreaAdmin)
 
 class areasAdmin(admin.ModelAdmin):
     list_display = ['descripcion','conceptos']
+
+
+
+    def save_model(self, request, obj, form, change):
+
+        if not hasattr(obj, 'usuario_creador'):
+            obj.usuario_creador = request.user
+        obj.save()
+
+        instance = form.save(commit=False)
+        if not hasattr(instance,'usuario_ult_mod'):
+            instance.usuario_ult_mod = request.user
+        instance.usuario_ult_mod = request.user
+        instance.save()
+        form.save_m2m()
+        return instance
+    def save_formset(self, request, form, formset, change):
+
+        def set_user(instance):
+            if not instance.usuario_ult_mod:
+                instance.usuario_ult_mod = request.user
+            instance.usuario_ult_mod = request.user
+            instance.save()
+        if formset.model == cas_area:
+            instances = formset.save(commit=False)
+            map(set_user, instances)
+            formset.save_m2m()
+            return instances
+        else:
+            return formset.save()
+
+#    def save_model(self, request, obj, form, change):
+#        if not change:
+#            obj.usuario_creador = request.user
+#
+#        obj.usuario_ult_mod = request.user
+#        obj.save()
+#
+#
+#    def save_formset(self, request, form, formset, change):
+#        instances = formset.save(commit=False)
+#
+#        for instance in instances:
+#            if isinstance(instance, descripcion):
+#            #Check if it is the correct type of inline
+#                if not instance.usuario_creador:
+#                    instance.usuario_creador = request.user
+#
+#                instance.usuario_ult_mod = request.user
+#                instance.save()
+
 admin.site.register(cas_area,areasAdmin)
 admin.site.register(cas_lugar)
 
