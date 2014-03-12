@@ -2,6 +2,7 @@ import csv
 import autocomplete_light
 from django.contrib.admin import FieldListFilter, SimpleListFilter
 from django.core.exceptions import PermissionDenied
+from django.forms import TextInput
 
 autocomplete_light.autodiscover()
 from django.contrib import admin
@@ -70,9 +71,15 @@ class BaseAdmin(admin.ModelAdmin):
 
 class DescInLine(admin.TabularInline):
     model = descripcion
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'120'})},
+    }
 
 class ConceptosAreaInline(admin.TabularInline):
     model = cas_area.conceptosporarea.through
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'120'})},
+    }
 
 
 
@@ -87,6 +94,10 @@ class ConceptAdmin(admin.ModelAdmin):
     inlines = DescInLine,ConceptosAreaInline
     actions = [export_as_csv]
     search_fields = ['fsn',]
+
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'120'})},
+    }
     def add_view(self, request, *args, **kwargs):
         result = super(ConceptAdmin, self).add_view(request, *args, **kwargs )
         request.session['filtered'] =  None
