@@ -1,5 +1,6 @@
 import csv
 import autocomplete_light
+from django.contrib.admin import FieldListFilter, SimpleListFilter
 from django.core.exceptions import PermissionDenied
 
 autocomplete_light.autodiscover()
@@ -9,6 +10,7 @@ from efectorescas.models import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
+
 
 
 
@@ -80,7 +82,7 @@ class conceptoAreaInline2(admin.TabularInline):
     form = autocomplete_light.modelform_factory(efector)
 
 class ConceptAdmin(admin.ModelAdmin):
-    list_filter = ['revisado','dominio','pedible']
+    list_filter = ['revisado','dominio','pedible',]
     list_display = ['fsn','descripciones','get_areas']
     inlines = DescInLine,ConceptosAreaInline
     actions = [export_as_csv]
@@ -121,7 +123,17 @@ class ConceptAdmin(admin.ModelAdmin):
                 return HttpResponseRedirect("../%s/" % next[0].pk)
         return super(ConceptAdmin, self).response_change(request, obj)
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        return super(ConceptAdmin, self).__init__(*args, **kwargs)
 
+
+    def save(self, *args, **kwargs):
+        kwargs['commit']=False
+        obj = super(ConceptAdmin, self).save(*args, **kwargs)
+        if self.request:
+            obj.usuario_creador = self.request.user
+        obj.save()
 
     def save_model(self, request, obj, form, change):
 
@@ -136,6 +148,7 @@ class ConceptAdmin(admin.ModelAdmin):
         instance.save()
         form.save_m2m()
         return instance
+
     def save_formset(self, request, form, formset, change):
 
         def set_user(instance):
