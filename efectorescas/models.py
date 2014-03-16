@@ -41,13 +41,6 @@ class cas_area(BaseModel):
     descripcion = models.CharField(max_length=255)
     conceptosporarea = models.ManyToManyField(concepto, through='conceptosCASporarea')
 
-
-#    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
-#    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
-#    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
-#    usuario_ult_mod = models.ForeignKey(User, null=True, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_modif')
-
-
     def conceptos (objeto):
         return '<br/>'.join(c.fsn for c in objeto.conceptosporarea.order_by('id')[:4])
     conceptos.allow_tags = True
@@ -80,11 +73,6 @@ class descripcion(BaseModel):
     id_concepto = models.ForeignKey(concepto, null=True, blank=True)
     tipodescripcion = models.IntegerField(choices=OPCIONES_TIPO)
 
-#    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
-#    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
-#    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
-#    usuario_ult_mod = models.ForeignKey(User, null=True, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_modif')
-
     def __unicode__(self):
         return self.termino
     class Meta:
@@ -95,11 +83,6 @@ class descripcion(BaseModel):
 class conceptosCASporarea(BaseModel):
     concepto = models.ForeignKey(concepto)
     area = models.ForeignKey(cas_area)
-
-#    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
-#    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
-#    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
-#    usuario_ult_mod = models.ForeignKey(User, null=True, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_modif')
 
     def get_efectorxarea(objeto):
         return '<br/>'.join(c.efector.ExamCode for c in objeto.efector_codigoporarea_set.order_by('id')[:4])
@@ -143,7 +126,6 @@ class efector(BaseModel):
 class efector_codigoporarea(BaseModel):
     efector = models.ForeignKey(efector)
     conceptoscasporarea = models.ForeignKey(conceptosCASporarea, verbose_name='Concepto x Area')
-
 
 
     def __unicode__(self):

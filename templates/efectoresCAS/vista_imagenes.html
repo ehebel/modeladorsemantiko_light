@@ -1,36 +1,15 @@
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/html">
-<head>
-    <title>Listado de Solicitudes</title>
-
-    <style type="text/css">
-        .pg-normal {
-            color: black;
-            font-weight: normal;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .pg-selected {
-            color: black;
-            font-weight: bold;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        table
-
-    </style>
-</head>
-<body>
-
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Efectores Examenes{% endblock %}
+{% block head %}Efectores Examenes{% endblock %}
 
 {% block branding %}
     <h1>Efectores Imágenes</h1>
 {% endblock %}
-
+<br>
 {% block content %}
 
+    {% if modelados_imagenes %}
+{#        <p>Encontramos {{ modelados_imagenes|length }} exámenes.</p>#}
 
     <table border=3 cellpadding=3 width=100%>
         <tr>
@@ -49,27 +28,29 @@
 
             {% for desc in item.descripcion_set.all %} <li>{{ desc.termino }} </li>{% endfor %}
             </td>
-            {% for bar in item.conceptoscasporarea_set.all %}
+            {% for area in item.conceptoscasporarea_set.all %}
 
                     <td>
-                        {{ bar.area }}
+                        {{ area.area }}
                     </td>
 
 
             <td>
 
 
+                    {% for codarea in area.efector_codigoporarea_set.all %}
+                        <li>[{{ codarea.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ codarea.id }}">{{ codarea.efector.ExamName }}</li></a>
 
-                    {% for test in bar.efector_codigoporarea_set.all %}
-                        <li>[{{ test.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ test.id }}">{{ test.efector.ExamName }}</li></a>
-{#                    {% endfor %}#}
-                {% endfor %}
+
+            {% endfor %}
             </td>
 
         </tr>
         {% endfor %}
     {% endfor %}
+
     </table>
+
 
 
 
@@ -89,8 +70,7 @@
         {% endif %}
     </div>
 
+    {% else %}
+        No hubo coincidencias!
+    {% endif %}
 {% endblock %}
-
-
-</body>
-</html>
