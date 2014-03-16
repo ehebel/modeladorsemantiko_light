@@ -60,41 +60,43 @@ def efectoresVistaImagenes(request):
 
 
     return render_to_response('efectoresCAS/vista_imagenes.html'
-        ,{'modelados':imagenes},
+        ,{'modelados_imagenes':imagenes},
         context_instance=RequestContext(request))
 
 
 
 def search(request):
-    form = SearchForm()
-    examenes = []
-
-    img_list = concepto.objects.filter(dominio__exact=1).order_by('fsn').all()
-    paginator = Paginator(img_list, 100)
-    try:
-        page = int(request.GET.get('page','1'))
-    except:
-        page = 1
-    try:
-        imagenes = paginator.page(page)
-    except(EmptyPage, InvalidPage):
-        imagenes = paginator.page(paginator.num_pages)
-
-    show_results = False
-    if 'query' in request.GET and request.GET['query']:
-        show_results = True
-        query = request.GET['query'].strip()
-        entry_query = get_query(query,['fsn',])
-        if entry_query:
-            form = SearchForm({'query': query})
-            examenes = concepto.objects.filter(entry_query, dominio=1).order_by('fsn')
-
-    variables = RequestContext(request, {   'form': form,
-                                            'modelados_imagenes': examenes,
-                                            'show_results': show_results,
-                                            'todos': imagenes,
-                                            })
-    if 'ajax' in request.GET:
-        return render_to_response('efectoresCAS/search_results.html', variables)
-    else:
-        return  render_to_response('efectoresCAS/search_form.html', variables)
+#    form = SearchForm()
+#    examenes = []
+#
+#    img_list = concepto.objects.filter(dominio__exact=1).order_by('fsn').all()
+#    paginator = Paginator(img_list, 100)
+#    try:
+#        page = int(request.GET.get('page','1'))
+#    except:
+#        page = 1
+#    try:
+#        imagenes = paginator.page(page)
+#    except(EmptyPage, InvalidPage):
+#        imagenes = paginator.page(paginator.num_pages)
+#
+#    show_results = False
+#    if 'query' in request.GET and request.GET['query']:
+#        show_results = True
+#        query = request.GET['query'].strip()
+#        entry_query = get_query(query,['fsn',])
+#        if entry_query:
+#            form = SearchForm({'query': query})
+#            examenes = concepto.objects.filter(entry_query, dominio=1).order_by('fsn')
+#
+#    variables = RequestContext(request, {   'form': form,
+#                                            'modelados_imagenes': examenes,
+#                                            'show_results': show_results,
+#                                            'todos': imagenes,
+#                                            })
+#    if 'ajax' in request.GET:
+#        return render_to_response('efectoresCAS/search_results.html', variables)
+#    else:
+#        return  render_to_response('efectoresCAS/search_form.html', variables)
+#
+    pass
