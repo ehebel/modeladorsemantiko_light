@@ -44,28 +44,7 @@
         </table>
 
 
-
-
-        <div class="pagination">
-            {% if modelados_imagenes.has_previous %}
-                <a href="?page={{ modelados_imagenes.previous_page_number }}">&#171 Anterior</a>
-            {% endif %}
-            {% for pg in modelados_imagenes.paginator.page_range %}
-                {% if modelados_imagenes.number == pg %}
-                    <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
-                {% else %}
-                    <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
-                {% endif %}
-            {% endfor %}
-            {% if modelados_imagenes.has_next %}
-                <span><a href="?page={{ modelados_imagenes.next_page_number }}">Siguiente &#187;</a></span>
-            {% endif %}
-        </div>
-
     {% else %}
         No hubo coincidencias!
     {% endif %}
 {% endblock %}
-
-
-</body>

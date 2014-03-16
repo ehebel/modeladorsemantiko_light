@@ -88,7 +88,7 @@ urlpatterns = patterns('',
     (r'modelador_light/efectores/imagenes/$', efectoresVistaImagenes),
 
 
-#    (r'^modelador_light/search-form/$', search),
+    (r'^modelador_light/search-form/$', search),
 
 
 )

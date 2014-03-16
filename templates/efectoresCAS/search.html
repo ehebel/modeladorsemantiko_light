@@ -1,4 +1,5 @@
 <br>
+{% block content %}
 <table border=3 cellpadding=3 width=100%>
     <tr>
         <th>Conceptos</th>
@@ -41,19 +42,19 @@
 
 
 
-
-<div class="pagination">
-    {% if todos.has_previous %}
-        <a href="?page={{ todos.previous_page_number }}">&#171 Anterior</a>
-    {% endif %}
-    {% for pg in todos.paginator.page_range %}
-        {% if todos.number == pg %}
-            <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
-        {% else %}
-            <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
+    <div class="pagination">
+        {% if todos.has_previous %}
+            <a href="?page={{ todos.previous_page_number }}">&#171 Anterior</a>
         {% endif %}
-    {% endfor %}
-    {% if todos.has_next %}
-        <span><a href="?page={{ todos.next_page_number }}">Siguiente &#187;</a></span>
-    {% endif %}
-</div>
+        {% for pg in todos.paginator.page_range %}
+            {% if todos.number == pg %}
+                <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
+            {% else %}
+                <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
+            {% endif %}
+        {% endfor %}
+        {% if todos.has_next %}
+            <span><a href="?page={{ todos.next_page_number }}">Siguiente &#187;</a></span>
+        {% endif %}
+    </div>
+{% endblock %}
