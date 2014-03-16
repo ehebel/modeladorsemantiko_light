@@ -6,7 +6,7 @@
 {% block head %}Buscar Examenes{% endblock %}
 
 {% block branding %}
-    <h1>Efectores de Imágenes</h1>
+    <h1>Efectores Imágenes</h1>
 {% endblock %}
 
 {% block content %}
@@ -22,9 +22,9 @@
 
             {% include 'efectoresCAS/search_results.html' %}
 
-{#        {% else %}#}
-{##}
-{#            {% include 'efectoresCAS/search.html' %}#}
+        {% else %}
+
+            {% include 'efectoresCAS/search.html' %}
 
         {% endif %}
     </div>
