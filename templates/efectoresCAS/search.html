@@ -1,36 +1,59 @@
-{% if modelados_imagenes %}
-    <ul class="examenes">
-        {% for examen in modelados_imagenes %}
-            <li>
-                <a href="{{ examen.link.url }}" class="fsn">
-                    {{ examen.fsn|escape }}</a>
-{#                {% if show_edit %}#}
-{#                    <a href="/save/?url={{ bookmark.link.url|urlencode }}"#}
-{#                       class="edit">[edit]</a>#}
-{#                {% endif %}#}
-                <br />
-{#                {% if show_tags %}#}
-{#                    Tags:#}
-{#                    {% if bookmark.tag_set.all %}#}
-{#                        <ul class="tags">#}
-{#                            {% for tag in bookmark.tag_set.all %}#}
-{#                                <li><a href="/tag/{{ tag.name|urlencode }}/">#}
-{#                                    {{ tag.name|escape }}</a></li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    {% else %}#}
-{#                        None.#}
-{#                    {% endif %}#}
-{#                    <br />#}
-{#                {% endif %}#}
-{#                {% if show_user %}#}
-{#                    Posted By:#}
-{#                    <a href="/user/{{ bookmark.user.username }}/" class="username">#}
-{#                        {{ bookmark.user.username }}</a>#}
-{#                {% endif %}#}
-            </li>
+<br>
+<table border=3 cellpadding=3 width=100%>
+    <tr>
+        <th>Conceptos</th>
+        <th>Descripciones</th>
+        <th>Areas</th>
+        <th>Efectores</th>
+    </tr>{% for item in todos %}
+    <tr>
+        <td rowspan={% if item.cas_area_set.all|length == 0 %}1{% else %}{{ item.cas_area_set.all|length }}{% endif %}>
+
+            <a href="/modelador_light/admin/efectorescas/concepto/{{ item.id }}">{{ item.fsn }}</a>
+        </td>
+
+        <td rowspan={% if item.cas_area_set.all|length == 0 %}1{% else %}{{ item.cas_area_set.all|length }}{% endif %}>
+
+            {% for desc in item.descripcion_set.all %} <li>{{ desc.termino }} </li>{% endfor %}
+        </td>
+        {% for area in item.conceptoscasporarea_set.all %}
+
+            <td>
+                {{ area.area }}
+            </td>
+
+
+            <td>
+
+
+                {% for codarea in area.efector_codigoporarea_set.all %}
+                    <li>[{{ codarea.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ codarea.id }}">{{ codarea.efector.ExamName }}</li></a>
+
+
+                {% endfor %}
+            </td>
+
+            </tr>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>Sin coincidencias</p>
-{% endif %}
+{% endfor %}
+
+</table>
+
+
+
+
+<div class="pagination">
+    {% if todos.has_previous %}
+        <a href="?page={{ todos.previous_page_number }}">&#171 Anterior</a>
+    {% endif %}
+    {% for pg in todos.paginator.page_range %}
+        {% if todos.number == pg %}
+            <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
+        {% else %}
+            <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
+        {% endif %}
+    {% endfor %}
+    {% if todos.has_next %}
+        <span><a href="?page={{ todos.next_page_number }}">Siguiente &#187;</a></span>
+    {% endif %}
+</div>

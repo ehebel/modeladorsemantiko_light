@@ -8,8 +8,8 @@
 <br>
 {% block content %}
 
-    {% if modelados_imagenes %}
-{#        <p>Encontramos {{ modelados_imagenes|length }} exámenes.</p>#}
+    {% if modelados %}
+
 
     <table border=3 cellpadding=3 width=100%>
         <tr>
@@ -17,7 +17,7 @@
             <th>Descripciones</th>
             <th>Areas</th>
             <th>Efectores</th>
-        </tr>{% for item in modelados_imagenes %}
+        </tr>{% for item in modelados %}
         <tr>
             <td rowspan={% if item.cas_area_set.all|length == 0 %}1{% else %}{{ item.cas_area_set.all|length }}{% endif %}>
 
