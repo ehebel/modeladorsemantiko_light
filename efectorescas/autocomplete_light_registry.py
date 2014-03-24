@@ -22,4 +22,13 @@ autocomplete_light.register(concepto,
         'placeholder': 'descripcion',
         'data-widget-minimum-characters': 1,
         })
+
+autocomplete_light.register(cas_area,
+    search_fields=['descripcion',],
+    attrs={
+        'placeholder': 'areas',
+        'data-widget-minimum-characters': 1,
+        })
+
+
 __author__ = 'ehebel'

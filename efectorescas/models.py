@@ -45,6 +45,8 @@ class cas_area(BaseModel):
         return '<br/>'.join(c.fsn for c in objeto.conceptosporarea.order_by('id')[:4])
     conceptos.allow_tags = True
     conceptos.short_description = 'Conceptos'
+
+
     def __unicode__(self):
         return self.descripcion
     class Meta:
@@ -85,7 +87,7 @@ class conceptosCASporarea(BaseModel):
     area = models.ForeignKey(cas_area)
 
     def get_efectorxarea(objeto):
-        return '<br/>'.join(c.efector.ExamCode for c in objeto.efector_codigoporarea_set.order_by('id')[:4])
+        return '<br/>'.join("[%s] %s" % (c.efector.ExamCode, c.efector.ExamName) for c in objeto.efector_codigoporarea_set.order_by('id')[:4])
     get_efectorxarea.allow_tags = True
     get_efectorxarea.short_description = 'Efectores'
 

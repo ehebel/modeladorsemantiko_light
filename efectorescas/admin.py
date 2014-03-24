@@ -93,7 +93,7 @@ class ConceptosAreaInline(EditLinkToInlineObject, admin.TabularInline):
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'120'})},
     }
-    readonly_fields = ('edit_link', )
+    readonly_fields = ('get_efectorxarea', 'edit_link',)
 
 
 
@@ -197,6 +197,10 @@ admin.site.register(concepto,ConceptAdmin)
 class EfectoresAreaInline(admin.TabularInline):
     model = efector_codigoporarea
     form = autocomplete_light.modelform_factory(efector)
+
+
+
+
 
 class efectorAdmin(admin.ModelAdmin):
 #    form = autocomplete_light.modelform_factory(efector)
@@ -317,6 +321,7 @@ admin.site.register(efector_codigoporarea,efectorareaAdmin)
 
 
 class concCasAreaAdmin(admin.ModelAdmin):
+    form = autocomplete_light.modelform_factory(conceptosCASporarea)
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         result = super(concCasAreaAdmin, self).change_view(request, object_id, form_url, extra_context )
