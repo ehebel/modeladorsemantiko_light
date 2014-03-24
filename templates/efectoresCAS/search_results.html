@@ -31,7 +31,7 @@
 
 
                         {% for codarea in area.efector_codigoporarea_set.all %}
-                            <li>[{{ codarea.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ codarea.id }}">{{ codarea.efector.ExamName }}</li></a>
+                            <li>[{{ codarea.efector.ExamCode }}] <a href="/modelador_light/admin/efectorescas/efector_codigoporarea/{{ codarea.id }}"> {{ codarea.efector.ExamName }} </li></a>
 
 
                         {% endfor %}

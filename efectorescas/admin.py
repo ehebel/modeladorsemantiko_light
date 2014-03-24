@@ -13,6 +13,19 @@ from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 
 
+from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse
+
+
+class EditLinkToInlineObject(object):
+    def edit_link(self, instance):
+        url = reverse('admin:%s_%s_change' % (
+            instance._meta.app_label,  instance._meta.module_name),  args=[instance.pk] )
+        if instance.pk:
+            return mark_safe(u'<a href="{u}">editar</a>'.format(u=url))
+        else:
+            return ''
+
 
 
 def export_as_csv(modeladmin, request, queryset):
@@ -75,11 +88,12 @@ class DescInLine(admin.TabularInline):
         models.CharField: {'widget': TextInput(attrs={'size':'120'})},
     }
 
-class ConceptosAreaInline(admin.TabularInline):
+class ConceptosAreaInline(EditLinkToInlineObject, admin.TabularInline):
     model = cas_area.conceptosporarea.through
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'120'})},
     }
+    readonly_fields = ('edit_link', )
 
 
 
