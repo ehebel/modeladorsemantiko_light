@@ -87,13 +87,16 @@ class DescInLine(admin.TabularInline):
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'120'})},
     }
+    extra = 2
 
 class ConceptosAreaInline(EditLinkToInlineObject, admin.TabularInline):
     model = cas_area.conceptosporarea.through
+    form = autocomplete_light.modelform_factory(conceptosCASporarea)
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'120'})},
     }
     readonly_fields = ('get_efectorxarea', 'edit_link',)
+    extra = 2
 
 
 
@@ -103,7 +106,7 @@ class conceptoAreaInline2(admin.TabularInline):
     form = autocomplete_light.modelform_factory(efector)
 
 class ConceptAdmin(admin.ModelAdmin):
-    list_filter = ['revisado','dominio','pedible',]
+    list_filter = ['revisado','dominio','pedible']
     list_display = ['fsn','descripciones','get_areas']
     inlines = DescInLine,ConceptosAreaInline
     actions = [export_as_csv]
@@ -423,26 +426,6 @@ class areasAdmin(admin.ModelAdmin):
             return instances
         else:
             return formset.save()
-
-#    def save_model(self, request, obj, form, change):
-#        if not change:
-#            obj.usuario_creador = request.user
-#
-#        obj.usuario_ult_mod = request.user
-#        obj.save()
-#
-#
-#    def save_formset(self, request, form, formset, change):
-#        instances = formset.save(commit=False)
-#
-#        for instance in instances:
-#            if isinstance(instance, descripcion):
-#            #Check if it is the correct type of inline
-#                if not instance.usuario_creador:
-#                    instance.usuario_creador = request.user
-#
-#                instance.usuario_ult_mod = request.user
-#                instance.save()
 
 admin.site.register(cas_area,areasAdmin)
 admin.site.register(cas_lugar)

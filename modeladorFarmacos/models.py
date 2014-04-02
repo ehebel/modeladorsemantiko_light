@@ -243,7 +243,7 @@ class xt_unidad_dosis_unitaria (models.Model):
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s| %s' % (self.estado, self.descripcion)
+        return u'%s| %s' % (self.get_estado_display(), self.descripcion)
     class Meta:
         ordering=['descripcion']
         verbose_name_plural ='XT unidad de dosis unitaria'
@@ -273,7 +273,7 @@ class xt_unidad_medida_unitaria (models.Model):
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
 
     def __unicode__(self):
-        return u'%s| %s' % (self.estado, self.descripcion)
+        return u'%s| %s' % (self.get_estado_display(), self.descripcion)
 
     class Meta:
         ordering=['descripcion']
@@ -399,7 +399,7 @@ class xt_forma_farm (models.Model):
     observacion = models.CharField(max_length=255, blank=True, null=True)
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
     def __unicode__(self):
-        return '%s|%s' % (self.estado, self.descripcion)
+        return '%s|%s' % (self.get_estado_display(), self.descripcion)
     class Meta:
         ordering=['id_xt_formafarm']
         verbose_name_plural ='XT formas farmaceuticas Extendidas'
@@ -479,7 +479,7 @@ class xt_sustancia (models.Model):
     observacion = models.CharField(max_length=255, blank=True, null=True)
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.id_xt_sust, self.estado, self.descripcion)
+        return u"%s | %s | %s" % (self.id_xt_sust, self.get_estado_display(), self.descripcion)
     class Meta:
         ordering=['id_xt_sust']
         verbose_name_plural ='XT extension de sustancias'
@@ -537,7 +537,7 @@ class xt_mb (models.Model):
     get_sustancia.short_description = 'XT Sustancias'
 
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.xt_id_mb, self.estado, self.descripcion)
+        return u"%s | %s | %s" % (self.xt_id_mb, self.get_estado_display(), self.descripcion)
     class Meta:
         ordering=['xt_id_mb']
         verbose_name_plural ='XT medicamento basico (extension)'
@@ -659,7 +659,7 @@ class xt_mc (models.Model):
 
 
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.id_xt_mc, self.estado, self.descripcion)
+        return u"%s | %s | %s" % (self.id_xt_mc, self.get_estado_display(), self.descripcion)
 
     class Meta:
         ordering=['descripcion']
@@ -733,7 +733,7 @@ class xt_laboratorio (models.Model):
     observacion = models.CharField(max_length=255, null=True, blank=True)
 
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.id_xt_lab, self.estado, self.desc_abrev)
+        return u"%s | %s | %s" % (self.id_xt_lab, self.get_estado_display(), self.desc_abrev)
     class Meta:
         ordering=['id_xt_lab']
         verbose_name_plural ='XT laboratorios de la extension'
@@ -905,12 +905,15 @@ class xt_pc (models.Model):
     equivalente = models.ManyToManyField('self', through='xt_bioequivalente', symmetrical=False)
 
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.id_xt_pc, self.estado, self.descripcion)
+        return u"%s | %s | %s" % (self.id_xt_pc, self.get_estado_display(), self.descripcion)
     class Meta:
         ordering=['descripcion']
         verbose_name_plural ='XT productos comerciales (extension)'
 
-
+    def get_pcce(objeto):
+        return '<br/>'.join(c.descripcion for c in objeto.xt_pcce_set.order_by('pk')[:4])
+    get_pcce.allow_tags = True
+    get_pcce.short_description = 'PCCE'
 
 
 ## ##-
@@ -975,7 +978,7 @@ class xt_mcce (models.Model):
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
 
     def __unicode__(self):
-        return u"%s | %s | %s (%s)" % (self.id_xt_mcce, self.estado, self.descripcion, self.tipo)
+        return u"%s | %s | %s (%s)" % (self.id_xt_mcce, self.get_estado_display(), self.descripcion, self.get_tipo_display())
     class Meta:
         ordering=['id_xt_mcce']
         verbose_name_plural ='XT medicamento clinico con envase (extension)'
@@ -1021,9 +1024,11 @@ class xt_pcce (models.Model):
     estado = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_ESTADO, null=False,default=0)
     revisado = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_BOOL, null=False,default=0)
     consultar = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_BOOL, null=False,default=0)
+
     #'''
     #Campos relacionados con el catalogo de compras de CENABAST
     #'''
+
     pack_cant = models.IntegerField(max_length=6, null=True,blank=True)
     pack_u =    models.ForeignKey(xt_unidad_medida_cant, null=True,blank=True)
 
@@ -1052,7 +1057,7 @@ class xt_pcce (models.Model):
     fue_modif_reciente.short_description = 'Modificado Recientemente?'
 
     def __unicode__(self):
-        return u"%s | %s | %s" % (self.id_xt_pcce, self.estado, self.descripcion)
+        return u"%s | %s | %s" % (self.id_xt_pcce, self.get_estado_display(), self.descripcion)
 
     class Meta:
         ordering=['id_xt_pcce']

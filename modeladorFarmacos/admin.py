@@ -14,7 +14,19 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin import FieldListFilter, SimpleListFilter
 from django.utils.encoding import force_unicode
 
+from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse
 
+##Funciones de ADMIN
+
+class EditLinkToInlineObject(object):
+    def editar(self, instance):
+        url = reverse('admin:%s_%s_change' % (
+            instance._meta.app_label,  instance._meta.module_name),  args=[instance.pk] )
+        if instance.pk:
+            return mark_safe(u'<a href="{u}">editar</a>'.format(u=url))
+        else:
+            return ''
 
 
 class UsuarioFilter(SimpleListFilter):
@@ -88,26 +100,52 @@ def export_as_csv(modeladmin, request, queryset):
     return response
 export_as_csv.short_description = "Exportar elementos seleccionados como CSV"
 
-class ProductoComercialInline(admin.TabularInline):
+
+
+###Inicio de InLines###
+
+class ProductoComercialInline(EditLinkToInlineObject, admin.TabularInline):
     model = xt_pc
-    form = autocomplete_light.modelform_factory(xt_pc)
+#    form = autocomplete_light.modelform_factory(xt_pc)
+    fields = ['descripcion','id_xt_lab','get_pcce', 'editar',]
+    ordering = ['id_xt_lab']
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'80'})},
+        }
+    readonly_fields = ('descripcion','id_xt_lab','get_pcce', 'editar',)
+    extra = 0
+
+class pcceInLine(admin.TabularInline):
+    pass
+    model = xt_pcce
+    form = autocomplete_light.modelform_factory(xt_pcce)
+    fields = ['descripcion','id_xt_mcce']
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'80'})},
+        }
+    extra = 0
+    #readonly_fields = ['descripcion','id_xt_mcce']
+
 
 class SustanciaClinicoInline(admin.TabularInline):
     model = xt_mc.rel_mc_sust.through
     form = autocomplete_light.modelform_factory(rel_mc_sust)
     radio_fields = {
         "estado": admin.HORIZONTAL}
+    extra = 1
 
 class SustanciaBasicoInline(admin.TabularInline):
     model = xt_mb.rel_xt_sust.through
     form = autocomplete_light.modelform_factory(rel_xt_mb_xt_sust)
     radio_fields = {
         "estado": admin.HORIZONTAL}
+    extra = 1
 
 class bioeqAdminInline(admin.TabularInline):
     model = xt_bioequivalente
     form = autocomplete_light.modelform_factory(xt_bioequivalente)
     fk_name = 'referencia'
+    extra = 1
 
     def save_model(self, request, obj, form, change):
 
@@ -123,6 +161,7 @@ class bioeqAdminInline(admin.TabularInline):
         form.save_m2m()
         return instance
 
+
 #
 ##Inicia ADMIN de modelos Completos
 ##Para mejorar facilidad de busqueda
@@ -132,6 +171,7 @@ class xt_sustanciaAdmin (admin.ModelAdmin):
     list_filter = ['revisado','consultar','estado','riesgo_teratogenico']
     search_fields = ['descripcion','id_xt_sust']
     ordering = ['descripcion',]
+
     def add_view(self, request, *args, **kwargs):
         result = super(xt_sustanciaAdmin, self).add_view(request, *args, **kwargs )
         request.session['filtered'] =  None
@@ -182,6 +222,7 @@ class xt_sustanciaAdmin (admin.ModelAdmin):
         instance.save()
         form.save_m2m()
         return instance
+
     def save_formset(self, request, form, formset, change):
 
         def set_user(instance):
@@ -217,7 +258,7 @@ class mcAdmin (admin.ModelAdmin):
         models.URLField: {'widget': TextInput(attrs={'size':'100'})}
     }
 
-    inlines = [SustanciaClinicoInline]
+    inlines = [SustanciaClinicoInline,ProductoComercialInline]
 
     search_fields = ['descripcion','id_xt_mc']
 
@@ -268,6 +309,7 @@ class mcAdmin (admin.ModelAdmin):
         result = super(mcAdmin, self).add_view(request, *args, **kwargs )
         request.session['filtered'] =  None
         return result
+
     def change_view(self, request, object_id, form_url='', extra_context=None):
 
         result = super(mcAdmin, self).change_view(request, object_id, form_url, extra_context )
@@ -285,6 +327,7 @@ class mcAdmin (admin.ModelAdmin):
                 pass
 
         return result
+
     def response_change(self, request, obj):
         """
         Determines the HttpResponse for the change_view stage.
@@ -562,9 +605,15 @@ class pcAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'100'})}
     }
-    inlines = [bioeqAdminInline,]
+    inlines = [bioeqAdminInline
+                , pcceInLine
+                 ]
     search_fields = ['descripcion','id_xt_pc']
-    list_display = ['id_xt_pc','descripcion','id_xt_mc','id_xt_lab','forma_farm_extendida','usuario_creador'] #TODO BOOL Bioequivalente
+    list_display = ['id_xt_pc','descripcion','id_xt_mc','id_xt_lab'
+                ,'forma_farm_extendida'
+#        ,'usuario_creador'
+#        ,'get_pcce'
+        ] #TODO BOOL Bioequivalente
     list_filter = ['estado','revisado','consultar'
         ,'usuario_creador__username'
                    #        , UsuarioFilter
@@ -1136,6 +1185,9 @@ class atcAdmin(admin.ModelAdmin):
     list_display = ['cod_atc','atc_desc','n1_desc','n2_desc','n3_desc','n4_desc']
     search_fields = ['cod_atc','atc_desc','n1_desc','n2_desc','n3_desc','n4_desc']
     list_filter = ['n1_desc']
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'120'})},
+        }
 admin.site.register(atc,atcAdmin)
 
 
@@ -1183,9 +1235,6 @@ class umcAdmin(admin.ModelAdmin):
 
 admin.site.register(xt_unidad_medida_cant,umcAdmin)
 
-
-#admin.site.registration(rel_mc_sust)
-#admin.site.registration(rel_xt_mb_xt_sust)
 
 class formaAgrupadaAdmin(admin.ModelAdmin):
     search_fields = ['descripcion',]
