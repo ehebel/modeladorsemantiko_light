@@ -2,7 +2,7 @@ import autocomplete_light
 autocomplete_light.autodiscover()
 
 from django.contrib import admin
-from modeloNanda.models import nandaClase, nanda, nandaDominio
+from modeloNanda.models import *
 
 admin.autodiscover()
 
@@ -24,9 +24,14 @@ autoregister('modeloNic', 'modeloNoc',)
 class nandaClaseAdmin(admin.ModelAdmin):
     # This will generate a ModelForm
     form = autocomplete_light.modelform_factory(nandaClase)
+
 admin.site.register(nandaClase,nandaClaseAdmin)
 
 admin.site.register(nanda)
 admin.site.register(nandaDominio)
+admin.site.register(nandaValoracion)
+admin.site.register(nandaTipo)
+admin.site.register(nandaCaracteristica)
+
 
 __author__ = 'ehebel'
