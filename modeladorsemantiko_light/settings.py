@@ -140,6 +140,8 @@ INSTALLED_APPS = (
     'modeloNoc',
     'modeladorFarmacos',
     'efectorescas',
+    'south',
+    'taggit'
 )
 
 # A sample logging configuration. The only tangible logging

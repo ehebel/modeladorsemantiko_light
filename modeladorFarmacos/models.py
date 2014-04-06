@@ -5,10 +5,20 @@ import datetime
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-OPCIONES_ESTADO = ((0, 'Vigente'),(1, 'No Vigente'))
+OPCIONES_ESTADO = ((0, '0 - Vigente'),(1, '1 - No Vigente'))
 OPCIONES_BOOL = ((1,'Si'),(0,'No'))
 
 # Create your models here.
+
+class BaseModel(models.Model):
+    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
+    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea', default=1)
+    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
+    usuario_ult_mod = models.ForeignKey(User, null=True, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_modif', default=1)
+
+    class Meta:
+        abstract = True
+
 class dbnet (models.Model):
     cod_clasificacion = models.IntegerField()
     clasificacion = models.CharField(max_length=255)
@@ -53,6 +63,23 @@ class atc (models.Model):
     class META:
         verbose_name_plural ='Codigos ATC'
 
+
+class dci (BaseModel):
+
+    dci = models.IntegerField(max_length=10)
+    subtanceName = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.subtanceName
+
+class registroSanitario(BaseModel):
+    registro = models.CharField(max_length=10, primary_key=True)
+    ano_caducidad = models.PositiveIntegerField(max_length=4, blank=True)
+    nombre = models.CharField(max_length=255)
+    titular = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.nombre
 
 ## ##
 ## table 'kairos_sustancia'
@@ -458,6 +485,8 @@ class xt_sustancia (models.Model):
 
     riesgo_teratogenico = models.CharField(max_length=15, null=True, blank=True)
 
+#    dci = models.OneToOneField(dci, null=True, blank=True)
+
     fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
     usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
     fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
@@ -532,7 +561,7 @@ class xt_mb (models.Model):
     cl_concepto = models.CharField(max_length=20, blank=True,null=True)
 
     def get_sustancia(objeto):
-        return "<br/>".join([u'%s | %s' % (s.estado,s.descripcion) for s in objeto.rel_xt_sust.order_by('id_xt_sust').all()[:6]])
+        return "<br/>".join([u'%s | %s' % (s.estado,s.descripcion) for s in objeto.rel_xt_sust.order_by('rel_xt_mb_xt_sust__orden').all()[:6]])
     get_sustancia.allow_tags = True
     get_sustancia.short_description = 'XT Sustancias'
 
@@ -559,13 +588,13 @@ class xt_mc (models.Model):
         ,(3,'No recomendable prescribir como MC')
         )
     OPCIONES_CREC = (
-        (0, 'Autogenerado'),
-        (1, 'Manual')
+        (0, '0 - Autogenerado'),
+        (1, '1 - Manual')
         )
     OPCIONES_SENSIBLE = (
-        (1,'Insensible'),
-        (2,'Primera Letra Mayuscula'),
-        (3,'Sensible')
+        (1,'1 - Insensible'),
+        (2,'2 - Primera Letra Mayuscula'),
+        (3,'3 - Sensible')
         )
     id_xt_mc = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=255, null=False, blank=False, help_text='Obligatorio')
@@ -896,7 +925,8 @@ class xt_pc (models.Model):
     hiba_term = models.CharField(max_length=255, null = True, blank=True)
 
     reg_isp     = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_BOOL, null=True, blank=True)
-    reg_isp_num = models.CharField(max_length=10, null = True, blank=True)
+    reg_isp_num = models.CharField(max_length=10, verbose_name='Registro Sanitario', null=True, blank=True)
+#    reg_isp_num = models.ManyToManyField(registroSanitario, verbose_name='Registro Sanitario', null=True, blank=True)
     reg_isp_ano = models.PositiveIntegerField(max_length=4, null=True, blank=True)
 
     observacion = models.CharField(max_length=255, blank=True, null=True)

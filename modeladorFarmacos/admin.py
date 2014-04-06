@@ -634,7 +634,9 @@ class pcAdmin(admin.ModelAdmin):
                        ,'comercial_cl'
                        ,'forma_farm_extendida','sabor','id_xt_fp'
                        ,'id_xt_mc','id_xt_lab'
-                       ,'reg_isp','reg_isp_num','reg_isp_ano','observacion')
+                       ,'reg_isp','reg_isp_num'
+#                       ,'reg_isp_ano'
+                       ,'observacion')
         }),
         ('Avanzados', {
             'classes': ('collapse',),

@@ -11,6 +11,9 @@ autocomplete_light.register(xt_mb,
 autocomplete_light.register(xt_mb, search_fields=('descripcion',),
     attrs={'placeholder': 'ej. IBUPROFENO + PARACETAMOL '})
 
+autocomplete_light.register(registroSanitario, search_fields=('nombre','registro'),
+    attrs={'placeholder': 'Registro ISPCH'})
+
 autocomplete_light.register(xt_unidad_dosis_unitaria, search_fields=('descripcion',),
     attrs={'placeholder': 'ej. ampolla, comprimido..'})
 
@@ -59,6 +62,8 @@ autocomplete_light.register(kairos_productos, search_fields=('descripcion',),)
 
 autocomplete_light.register(dbnet, search_fields=('producto',),)
 
-autocomplete_light.register(xt_laboratorio, search_fields=('desc_abrev','descripcion'),)
+autocomplete_light.register(xt_laboratorio, search_fields=('desc_abrev','descripcion'),
+    attrs={'placeholder': 'Laboratorio'}
+)
 
 __author__ = 'ehebel'

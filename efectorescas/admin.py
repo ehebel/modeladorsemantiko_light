@@ -107,7 +107,7 @@ class conceptoAreaInline2(admin.TabularInline):
 
 class ConceptAdmin(admin.ModelAdmin):
     list_filter = ['revisado','dominio','pedible']
-    list_display = ['fsn','descripciones','get_areas']
+    list_display = ['fsn','descripciones','get_areas',]
     inlines = DescInLine,ConceptosAreaInline
     actions = [export_as_csv]
     search_fields = ['fsn',]

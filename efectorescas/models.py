@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
+
 class BaseModel(models.Model):
     fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
     usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea', default=1)
@@ -20,7 +22,6 @@ class concepto(BaseModel):
     pedible = models.BooleanField(default=1)
     dominio_nucleo = models.IntegerField(choices=OPCIONES_DOMINIO, default=1)
 
-
     def descripciones(objeto):
         return '<br/>'.join(c.termino for c in objeto.descripcion_set.order_by('id')[:4])
 
@@ -31,6 +32,7 @@ class concepto(BaseModel):
         return '<br/>'.join(c.descripcion for c in self.cas_area_set.order_by('id')[:4])
     get_areas.allow_tags = True
     get_areas.short_description = 'Areas'
+
     def __unicode__(self):
         return self.fsn
     class Meta:
