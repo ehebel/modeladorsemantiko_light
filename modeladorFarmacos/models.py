@@ -485,7 +485,7 @@ class xt_sustancia (models.Model):
 
     riesgo_teratogenico = models.CharField(max_length=15, null=True, blank=True)
 
-#    dci = models.OneToOneField(dci, null=True, blank=True)
+    dci = models.OneToOneField(dci, null=True, blank=True)
 
     fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
     usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea')
@@ -925,9 +925,9 @@ class xt_pc (models.Model):
     hiba_term = models.CharField(max_length=255, null = True, blank=True)
 
     reg_isp     = models.PositiveSmallIntegerField(max_length=1,choices=OPCIONES_BOOL, null=True, blank=True)
-    reg_isp_num = models.CharField(max_length=10, verbose_name='Registro Sanitario', null=True, blank=True)
-#    reg_isp_num = models.ManyToManyField(registroSanitario, verbose_name='Registro Sanitario', null=True, blank=True)
-    reg_isp_ano = models.PositiveIntegerField(max_length=4, null=True, blank=True)
+    #reg_isp_num = models.CharField(max_length=10, verbose_name='Registro Sanitario', null=True, blank=True)
+    reg_isp_num = models.ManyToManyField(registroSanitario, verbose_name='Registro Sanitario', null=True, blank=True)
+    #reg_isp_ano = models.PositiveIntegerField(max_length=4, null=True, blank=True)
 
     observacion = models.CharField(max_length=255, blank=True, null=True)
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
