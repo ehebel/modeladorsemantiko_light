@@ -1334,6 +1334,7 @@ class xtSaborAdmin(admin.ModelAdmin):
         return super(xtSaborAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_sabor,xtSaborAdmin)
+admin.site.register(registroSanitario)
 
 
 __author__ = 'ehebel'

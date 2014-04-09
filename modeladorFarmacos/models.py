@@ -79,7 +79,7 @@ class registroSanitario(BaseModel):
     titular = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return self.nombre
+        return u"%s/%s - %s" % (self.registro,self.ano_caducidad,self.nombre)
 
 ## ##
 ## table 'kairos_sustancia'

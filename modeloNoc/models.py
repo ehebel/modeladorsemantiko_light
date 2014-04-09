@@ -32,7 +32,7 @@ class nocClase(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField()
     dominio= models.ForeignKey(nocDominio)
-    nic = models.ManyToManyField(noc)
+    noc = models.ManyToManyField(noc)
     def __unicode__(self):
         return self.titulo
     class Meta:
