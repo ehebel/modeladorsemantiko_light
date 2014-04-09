@@ -167,8 +167,9 @@ class bioeqAdminInline(admin.TabularInline):
 ##Para mejorar facilidad de busqueda
 #
 class xt_sustanciaAdmin (admin.ModelAdmin):
-    list_display = ['id_xt_sust','descripcion','riesgo_teratogenico']
-    list_filter = ['revisado','consultar','estado','riesgo_teratogenico']
+    form = autocomplete_light.modelform_factory(xt_sustancia)
+    list_display = ['id_xt_sust','descripcion','dci','riesgo_teratogenico']
+    list_filter = ['revisado','consultar','estado','riesgo_teratogenico',('dci', IsNullFieldListFilter)]
     search_fields = ['descripcion','id_xt_sust']
     ordering = ['descripcion',]
 

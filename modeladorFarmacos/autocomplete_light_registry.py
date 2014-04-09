@@ -1,6 +1,13 @@
 import autocomplete_light
 from modeladorFarmacos.models import *
 
+autocomplete_light.register(dci,
+    search_fields=['subtanceName'],
+    attrs={
+        'placeholder': 'DCI sustancia',
+        'data-widget-minimum-characters': 1,
+        })
+
 autocomplete_light.register(xt_mb,
     search_fields=['descripcion'],
     attrs={
