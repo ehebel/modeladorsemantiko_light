@@ -92,7 +92,9 @@ class VistaUsuarioCreadorPCCE(LoggedInMixin,ListView):
         usuario_creador = get_object_or_404(User, id__iexact=self.args[0])
         return xt_pcce.objects.filter(usuario_creador=usuario_creador, revisado__exact=0).order_by('descripcion')
 
-
+class VistaPorRevisarPCCE(LoggedInMixin,ListView):
+    model = xt_pcce
+    template_name = 'modeladorFarmacos/pcce_pendientes.html'
 
 class VistaListaPCCreadores(LoggedInMixin,ListView):
     model = xt_pc
@@ -101,6 +103,7 @@ class VistaListaPCCreadores(LoggedInMixin,ListView):
     def get_queryset(self):
         return xt_pcce.objects.filter(revisado__exact=0).order_by('usuario_creador')
 
+
 class VistaUsuarioCreadorPC(LoggedInMixin,ListView):
     context_object_name = 'lista_pc_por_usuario'
     template_name = 'modeladorFarmacos/pc_por_usuario.html'
@@ -108,6 +111,13 @@ class VistaUsuarioCreadorPC(LoggedInMixin,ListView):
     def get_queryset(self):
         usuario_creador = get_object_or_404(User, id__iexact=self.args[0])
         return xt_pc.objects.filter(usuario_creador=usuario_creador, revisado__exact=0).order_by('descripcion')
+
+
+class VistaPorRevisarPC(LoggedInMixin,ListView):
+    model = xt_pc
+    template_name = 'modeladorFarmacos/pc_pendientes.html'
+    context_object_name = 'lista_pc'
+    paginate_by = 100
 
 
 class VistaListaPCCE(LoggedInMixin, ListView):

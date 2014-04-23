@@ -55,6 +55,14 @@ urlpatterns = patterns('',
     url(r'^modelador_light/xt_pc/lista_usuarios/(\w+)/$', modeladorFarmacos.views.VistaUsuarioCreadorPC.as_view()),
 
 
+    url(r'^modelador_light/xt_pc/lista_pendientes/$', modeladorFarmacos.views.VistaPorRevisarPC.as_view(),
+        name='lista_pendientes',),
+
+
+    url(r'^modelador_light/xt_pcce/lista_pendientes/$', modeladorFarmacos.views.VistaPorRevisarPCCE.as_view(),
+        name='lista_pendientes',),
+
+
 ##Vistas Para Creacion de Nuevos Bioequivalentes
     url(r'^modelador_light/bioeq/$', modeladorFarmacos.views.VistaBioequivalente.as_view(),
         name='bioeq-lista',),

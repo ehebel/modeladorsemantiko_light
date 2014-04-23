@@ -141,7 +141,8 @@ INSTALLED_APPS = (
     'modeladorFarmacos',
     'efectorescas',
     'south',
-    'taggit'
+    'taggit',
+#    'maestroIndicaciones'
 )
 
 # A sample logging configuration. The only tangible logging

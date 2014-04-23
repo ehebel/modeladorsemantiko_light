@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block extrahead %}
+{% endblock %}
+
+{% block content %}
+
+    <a href="javascript:history.go(0)">Actualizar</a>
+    <ul>
+
+{% if lista_pc %}
+        <table border=3 cellpadding=5>
+
+            <tr>
+                <th>Productos Comerciales</th>
+                <th>Descripcion Abreviada</th>
+                <th>Forma Farmaceutica</th>
+                <th>Laboratorio</th>
+                <th nowrap="nowrap">Registro Sanitario</th>
+                <th>Observacion</th>
+                <th>Fecha Creacion</th>
+                {#                <th>Rev</th>#}
+            </tr>
+            {% for item in object_list %}
+                <tr>
+
+                    <td rowspan=1>
+                        <a href="/modelador_light/admin/modeladorFarmacos/xt_pc/{{ item.id_xt_pc }}" target="_blank">{{ item.descripcion }}</a>
+                    </td>
+                    <td>
+                        {{ item.descripcion_abreviada }}
+                    </td>
+                    <td>
+                        {{ item.forma_farm_extendida }}
+                    </td>
+                    <td>
+                        {{ item.id_xt_lab.descripcion }}
+                    </td>
+                    <td>
+                        {% for registro in item.reg_isp_num.all %}
+{#                            <li><a href="http://registrosanitario.ispch.gob.cl/Ficha.aspx?RegistroISP={{ registro.registro }}/{{ registro.ano_caducidad }}">{{ registro.registro }}/{{ registro.ano_caducidad }}</a></li>#}
+                            <li><a href="http://registrosanitario.ispch.gob.cl/Ficha.aspx?RegistroISP={{ registro.registro }}/{% if registro.ano_caducidad < 10 %}0{{ registro.ano_caducidad }} {% elif registro.ano_caducidad > 2000 %}{{ registro.ano_caducidad|add:"-2000"  }}{% else %}{{ registro.ano_caducidad }}{% endif %}">
+                                {{ registro.registro }}/{% if registro.ano_caducidad < 10 %}0{{ registro.ano_caducidad }} {% elif registro.ano_caducidad > 2000 %}{{ registro.ano_caducidad|add:"-2000"  }}{% else %}{{ registro.ano_caducidad }}{% endif %} </a>
+                            </li>
+
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ item.observacion }}
+                    </td>
+                    <td>
+                        {{ item.fecha_creacion|date:"SHORT_DATE_FORMAT"  }}
+                    </td>
+                </tr>
+                <tr>
+            {% endfor %}
+            </tr>
+        </table>
+
+            {% if is_paginated %}
+                <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">&#171 Anterior</a>
+                {% endif %}
+
+                {% for pg in page_obj.paginator.page_range %}
+                    {% if page_obj.number == pg %}
+                        <span class="active"><a href="?page={{ pg }}">{{ pg }}</a>|</span>
+                    {% else %}
+                        <span><a href="?page={{ pg }}">{{ pg }}</a> |</span>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Siguiente &#187;</a>
+                {% endif %}
+            </span>
+                </div>
+            {% endif %}
+
+        {% else %}
+            <h3>Sin PC</h3>
+            <p>no hay productos comerciales!!! :(</p>
+        {% endif %}
+
+{% endblock %}

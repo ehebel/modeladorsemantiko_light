@@ -74,7 +74,7 @@ class dci (BaseModel):
 
 class registroSanitario(BaseModel):
     registro = models.CharField(max_length=10, primary_key=True)
-    ano_caducidad = models.PositiveIntegerField(max_length=4, blank=True)
+    ano_caducidad = models.PositiveIntegerField(max_length=4, blank=False)
     nombre = models.CharField(max_length=255)
     titular = models.CharField(max_length=255)
 
@@ -674,17 +674,12 @@ class xt_mc (models.Model):
         return object.atc_code
     get_atc.short_description = 'ATC'
 
-    #    def save(self, force_insert=False, force_update=False):
-    ##        def my_custom_sql():
-    ##            from django.db import connection, transaction
-    ##            cursor = connection.cursor()
-    ##            cursor.execute("UPDATE modeladorFarmacos2_xt_mc SET termino_autogenerado = 'Test' WHERE 1")
-    ##            transaction.commit_unless_managed()
-    ##            return row
-    #        self.termino_autogenerado = u'%s, %s' % (
-    #            ' '.join([u'%s' % (s.descripcion) for s in self.rel_mc_sust.order_by('id_xt_sust').all()])
-    #            , self.forma_farmaceutica_agrup.descripcion)
-    #        super(xt_mc, self).save(force_insert, force_update)
+    def save(self, *args, **kwargs):
+        from django.db import connection, transaction
+        super(xt_mc, self).save(*args, **kwargs)
+        cursor = connection.cursor()
+        cursor.execute("UPDATE `modeladorFarmacos_xt_mc` AS A INNER JOIN ( SELECT mc.id_xt_mc, mc.descripcion, CONCAT_WS(' ',GROUP_CONCAT(distinct CONCAT(sust.descripcion,' ' , CASE WHEN rmcsust.potencia IS NULL THEN ''  	WHEN rmcsust.potencia IS NOT NULL AND pot.id_unidad_potencia = 28 		THEN CONCAT (replace(rmcsust.potencia,'.',','), pot.descripcion) 	ELSE CONCAT (replace(rmcsust.potencia,'.',','),' ', pot.descripcion) END , CASE WHEN rmcsust.`partido_por` IS NULL THEN ''  	ELSE CONCAT('/', 		CASE WHEN rmcsust.`partido_por`= 1  THEN ''  ELSE CONCAT(replace(rmcsust.`partido_por`,'.',','),' ') END 	,pot2.descripcion) END	  ) order by rmcsust.orden separator ' + ') , ffa.descripcion ,REPLACE(mc.`volumen_total_cant`,'.',','), umc.`descripcion`)AS AUTOMAT FROM modeladorFarmacos_xt_mc mc 	INNER JOIN `modeladorFarmacos_rel_mc_sust` rmcsust ON mc.`id_xt_mc` = rmcsust.`id_xt_mc_id` 	LEFT OUTER JOIN `modeladorFarmacos_xt_sustancia` sust ON rmcsust.`id_xt_sust_id` = sust.`id_xt_sust` 	LEFT OUTER JOIN `modeladorFarmacos_xt_unidad_potencia` pot ON rmcsust.`id_unidad_potencia_id` = pot.`id_unidad_potencia` 	LEFT OUTER JOIN `modeladorFarmacos_xt_unidad_potencia` pot2 ON rmcsust.`id_unidad_partido_por_id` = pot2.`id_unidad_potencia` 	LEFT OUTER JOIN `modeladorFarmacos_xt_forma_agrupada` ffa ON mc.`forma_farmaceutica_agrup_id` = ffa.`id_xt_forma_agrupada` 	LEFT OUTER JOIN `modeladorFarmacos_xt_unidad_medida_cant` umc ON mc.`volumen_total_u_id` = umc.`id_unidad_medida_cant` GROUP BY mc.`id_xt_mc` ) AS B ON A.`id_xt_mc` = B.id_xt_mc SET A.`termino_autogenerado` = CASE A.`creac_nombre` WHEN 0 THEN B.AUTOMAT  ELSE A.`descripcion` END WHERE A.id_xt_mc = {0}".format(self.pk))
+        transaction.commit_on_success()
 
 
     def __unicode__(self):

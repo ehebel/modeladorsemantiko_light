@@ -151,9 +151,9 @@ class ConceptAdmin(admin.ModelAdmin):
                 return HttpResponseRedirect("../%s/" % next[0].pk)
         return super(ConceptAdmin, self).response_change(request, obj)
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('request', None)
-        return super(ConceptAdmin, self).__init__(*args, **kwargs)
+#    def __init__(self, *args, **kwargs):
+#        self.request = kwargs.pop('request', None)
+#        return super(ConceptAdmin, self).__init__(*args, **kwargs)
 
 
     def save(self, *args, **kwargs):

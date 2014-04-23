@@ -166,10 +166,15 @@ class bioeqAdminInline(admin.TabularInline):
 ##Inicia ADMIN de modelos Completos
 ##Para mejorar facilidad de busqueda
 #
+
 class xt_sustanciaAdmin (admin.ModelAdmin):
     form = autocomplete_light.modelform_factory(xt_sustancia)
-    list_display = ['id_xt_sust','descripcion','dci','riesgo_teratogenico']
-    list_filter = ['revisado','consultar','estado','riesgo_teratogenico',('dci', IsNullFieldListFilter)]
+    list_display = ['id_xt_sust','descripcion'
+        ,'dci'
+        ,'riesgo_teratogenico']
+    list_filter = ['revisado','consultar','estado','riesgo_teratogenico'
+        ,('dci', IsNullFieldListFilter)
+    ]
     search_fields = ['descripcion','id_xt_sust']
     ordering = ['descripcion',]
 
@@ -247,7 +252,7 @@ class xt_sustanciaAdmin (admin.ModelAdmin):
             request.META['QUERY_STRING'] = request.GET.urlencode()
         return super(xt_sustanciaAdmin,self).changelist_view(request, extra_context=extra_context)
 
-admin.site.register(xt_sustancia,xt_sustanciaAdmin)
+#admin.site.register(xt_sustancia,xt_sustanciaAdmin)
 
 
 class mcAdmin (admin.ModelAdmin):
@@ -433,6 +438,7 @@ class mbAdmin(admin.ModelAdmin):
                 pass
 
         return result
+
     def response_change(self, request, obj):
         """
         Determines the HttpResponse for the change_view stage.
@@ -1339,4 +1345,3 @@ admin.site.register(registroSanitario)
 
 
 __author__ = 'ehebel'
-
