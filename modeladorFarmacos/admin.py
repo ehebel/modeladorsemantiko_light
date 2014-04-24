@@ -252,7 +252,7 @@ class xt_sustanciaAdmin (admin.ModelAdmin):
             request.META['QUERY_STRING'] = request.GET.urlencode()
         return super(xt_sustanciaAdmin,self).changelist_view(request, extra_context=extra_context)
 
-#admin.site.register(xt_sustancia,xt_sustanciaAdmin)
+admin.site.register(xt_sustancia,xt_sustanciaAdmin)
 
 
 class mcAdmin (admin.ModelAdmin):
@@ -1319,6 +1319,7 @@ admin.site.register(kairos_precio,kairosPrecioAdmin)
 
 
 class xtSaborAdmin(admin.ModelAdmin):
+#    pass
     def save_model(self, request, obj, form, change):
 
         if not hasattr(obj, 'usuario_creador'):
@@ -1332,15 +1333,16 @@ class xtSaborAdmin(admin.ModelAdmin):
         instance.save()
         form.save_m2m()
         return instance
-    def changelist_view(self, request, extra_context=None):
-        if not request.GET.has_key('estado__exact'):
-            q = request.GET.copy()
-            q['estado__exact'] = '0'
-            request.GET = q
-            request.META['QUERY_STRING'] = request.GET.urlencode()
-        return super(xtSaborAdmin,self).changelist_view(request, extra_context=extra_context)
+#    def changelist_view(self, request, extra_context=None):
+#        if not request.GET.has_key('estado__exact'):
+#            q = request.GET.copy()
+#            q['estado__exact'] = '0'
+#            request.GET = q
+#            request.META['QUERY_STRING'] = request.GET.urlencode()
+#        return super(xtSaborAdmin,self).changelist_view(request, extra_context=extra_context)
 
 admin.site.register(xt_sabor,xtSaborAdmin)
+
 admin.site.register(registroSanitario)
 
 
