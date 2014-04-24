@@ -95,6 +95,10 @@ class VistaUsuarioCreadorPCCE(LoggedInMixin,ListView):
 class VistaPorRevisarPCCE(LoggedInMixin,ListView):
     model = xt_pcce
     template_name = 'modeladorFarmacos/pcce_pendientes.html'
+    context_object_name = 'lista_pcce'
+    paginate_by = 100
+    queryset = xt_pcce.objects.filter(revisado__exact=0)
+
 
 class VistaListaPCCreadores(LoggedInMixin,ListView):
     model = xt_pc
@@ -118,6 +122,9 @@ class VistaPorRevisarPC(LoggedInMixin,ListView):
     template_name = 'modeladorFarmacos/pc_pendientes.html'
     context_object_name = 'lista_pc'
     paginate_by = 100
+
+    queryset = xt_pc.objects.filter(revisado__exact=0)
+
 
 
 class VistaListaPCCE(LoggedInMixin, ListView):

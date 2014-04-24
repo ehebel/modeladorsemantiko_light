@@ -37,7 +37,6 @@
                     </td>
                     <td>
                         {% for registro in item.reg_isp_num.all %}
-{#                            <li><a href="http://registrosanitario.ispch.gob.cl/Ficha.aspx?RegistroISP={{ registro.registro }}/{{ registro.ano_caducidad }}">{{ registro.registro }}/{{ registro.ano_caducidad }}</a></li>#}
                             <li><a href="http://registrosanitario.ispch.gob.cl/Ficha.aspx?RegistroISP={{ registro.registro }}/{% if registro.ano_caducidad < 10 %}0{{ registro.ano_caducidad }} {% elif registro.ano_caducidad > 2000 %}{{ registro.ano_caducidad|add:"-2000"  }}{% else %}{{ registro.ano_caducidad }}{% endif %}">
                                 {{ registro.registro }}/{% if registro.ano_caducidad < 10 %}0{{ registro.ano_caducidad }} {% elif registro.ano_caducidad > 2000 %}{{ registro.ano_caducidad|add:"-2000"  }}{% else %}{{ registro.ano_caducidad }}{% endif %} </a>
                             </li>
