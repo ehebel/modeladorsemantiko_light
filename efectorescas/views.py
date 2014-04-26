@@ -46,7 +46,7 @@ def get_query(query_string, search_fields):
 def efectoresVistaImagenes(request):
     img_list = concepto.objects.filter(dominio__exact=1).order_by('fsn').all()
 
-    paginator = Paginator(img_list, 100)
+    paginator = Paginator(img_list, 200)
 
     try:
         page = int(request.GET.get('page','1'))
@@ -70,7 +70,7 @@ def search(request):
     examenes = []
 
     img_list = concepto.objects.filter(dominio__exact=1).order_by('fsn').all()
-    paginator = Paginator(img_list, 100)
+    paginator = Paginator(img_list, 200)
     try:
         page = int(request.GET.get('page','1'))
     except:
