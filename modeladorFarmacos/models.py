@@ -74,7 +74,7 @@ class dci (BaseModel):
 
 class registroSanitario(BaseModel):
     registro = models.CharField(max_length=10, primary_key=True)
-    ano_caducidad = models.CharField(max_length=2, blank=False)
+    ano_caducidad = models.CharField(max_length=2, blank=False,help_text='Usar dos digitos. Ej. 09, 10, 11, etc.')
     nombre = models.CharField(max_length=255)
     titular = models.CharField(max_length=255)
 
