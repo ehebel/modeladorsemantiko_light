@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block branding %}
+{% endblock %}
+
+{% block content %}
+    <h2>Documentos</h2>
+
+    <ul>
+        {% for documento in object_list %}
+            <li><a href="../media/{{ documento.archivo }}"> {{ documento.archivo }} </a></li>
+        {% endfor %}
+    </ul>
+<a href="../subir">Nuevo Documento</a>
+
+{% endblock %}
+

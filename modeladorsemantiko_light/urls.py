@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static
+from django.conf import settings
 # Uncomment the next two lines to enable the admin:
 
 from django.views import generic
-
 import autocomplete_light
 from efectorescas.views import efectoresVistaImagenes, search
 from modeladorFarmacos.forms import bioeqForm
@@ -17,6 +18,8 @@ from tastypie.api import Api
 
 from modeladorFarmacos.views import *
 import modeladorFarmacos.views
+
+from repodocumentos.views import ArchivoDetalleVista,ArchivosSubidosView,ArchivoIndiceVista
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -98,8 +101,14 @@ urlpatterns = patterns('',
 
     (r'^modelador_light/search-form/$', search),
 
+    url(r'^modelador_light/subir/', ArchivosSubidosView.as_view(), name='archivo_upload'),
+    url(r'^modelador_light/lista_subidos/(?P<pk>\d+)/$', ArchivoDetalleVista.as_view (),
+        name='archivo_subido'),
+    url(r'^modelador_light/lista_subidos/', ArchivoIndiceVista.as_view (),
+        name='archivo_lista'),
+    url(r'^modelador_light/media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media'}),
 
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()

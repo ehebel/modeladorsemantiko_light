@@ -162,8 +162,8 @@ class descripcionAdmin(versionesAdmin):
 admin.site.register(descripcion, descripcionAdmin)
 
 class conceptoAdmin(versionesAdmin):
-    list_display = ['__unicode__','dominio','grupojerarquico']
-
+#    list_display = ['__unicode__','dominio','grupojerarquico']
+    pass
 admin.site.register(concepto,conceptoAdmin)
 
 
@@ -200,3 +200,15 @@ class xt_unidadAdmin(versionesAdmin):
             ,"u_visible_prescripcion": admin.HORIZONTAL
                     }
 admin.site.register(xt_unidad,xt_unidadAdmin)
+
+class xt_laboratorioAdmin(versionesAdmin):
+    pass
+admin.site.register(xt_laboratorio,xt_laboratorioAdmin)
+
+class xt_gfpAdmin(versionesAdmin):
+    pass
+admin.site.register(xt_gfp,xt_gfpAdmin)
+
+class xt_fpAdmin(versionesAdmin):
+    pass
+admin.site.register(xt_fp,xt_fpAdmin)
