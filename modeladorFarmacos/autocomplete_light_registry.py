@@ -27,7 +27,7 @@ autocomplete_light.register(xt_unidad_dosis_unitaria, search_fields=('descripcio
 autocomplete_light.register(xt_unidad_medida_unitaria, search_fields=('descripcion',),
     attrs={'placeholder': 'ej. comprimido'})
 
-autocomplete_light.register(xt_forma_farm, search_fields=('descripcion',),
+autocomplete_light.register(xt_forma_farm, search_fields=('descripcion','id_xt_formafarm',),
     attrs={'placeholder': 'ej. comprimido efervescente '})
 
 

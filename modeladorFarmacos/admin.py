@@ -991,7 +991,7 @@ admin.site.register(xt_unidad_medida_unitaria,umuAdmin)
 
 
 class ffAdmin(admin.ModelAdmin):
-    list_display = ['descripcion','forma_agrupada','estado']
+    list_display = ['id_xt_formafarm','descripcion','forma_agrupada','estado']
     list_filter = ['estado','forma_agrupada']
     search_fields = ['descripcion']
 

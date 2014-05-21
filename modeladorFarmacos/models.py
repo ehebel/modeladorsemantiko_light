@@ -426,7 +426,7 @@ class xt_forma_farm (models.Model):
     observacion = models.CharField(max_length=255, blank=True, null=True)
     cl_concepto = models.CharField(max_length=20, blank=True, null=True)
     def __unicode__(self):
-        return '%s|%s' % (self.get_estado_display(), self.descripcion)
+        return '%s-%s|%s' % (self.id_xt_formafarm, self.descripcion, self.get_estado_display())
     class Meta:
         ordering=['id_xt_formafarm']
         verbose_name_plural ='XT formas farmaceuticas Extendidas'
