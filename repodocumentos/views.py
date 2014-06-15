@@ -34,3 +34,5 @@ class ArchivoIndiceVista(ListView):
     template_name = 'docrepo/archivos_subidos_lista.html'
     context_object_name = 'archivos'
     queryset = ArchivoSubido.objects.all()
+
+

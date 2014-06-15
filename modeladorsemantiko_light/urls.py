@@ -8,6 +8,7 @@ import autocomplete_light
 from efectorescas.views import efectoresVistaImagenes, search
 from modeladorFarmacos.forms import bioeqForm
 
+
 autocomplete_light.autodiscover()
 
 from django.contrib import admin
@@ -20,6 +21,8 @@ from modeladorFarmacos.views import *
 import modeladorFarmacos.views
 
 from repodocumentos.views import ArchivoDetalleVista,ArchivosSubidosView,ArchivoIndiceVista
+from repocasos.views import ListCaseView,CreateCaseView, UpdateCaseView,DeleteCaseView,CaseView
+
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -101,12 +104,25 @@ urlpatterns = patterns('',
 
     (r'^modelador_light/search-form/$', search),
 
+##Repositorio de Documentos
     url(r'^modelador_light/subir/', ArchivosSubidosView.as_view(), name='archivo_upload'),
     url(r'^modelador_light/lista_subidos/(?P<pk>\d+)/$', ArchivoDetalleVista.as_view (),
         name='archivo_subido'),
     url(r'^modelador_light/lista_subidos/', ArchivoIndiceVista.as_view (),
         name='archivo_lista'),
     url(r'^modelador_light/media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'media'}),
+
+##Repositorio de Casos
+    url(r'^modelador_light/casos/$', ListCaseView.as_view(),
+        name='case-list',),
+    url(r'^modelador_light/casos/nuevo', CreateCaseView.as_view(),
+        name='case-new',),
+    url(r'^modelador_light/casos/editar/(?P<pk>\d+)/$', UpdateCaseView.as_view(),
+        name='case-edit',),
+    url(r'^modelador_light/casos/borrar/(?P<pk>\d+)/$', DeleteCaseView.as_view(),
+        name='case-delete',),
+    url(r'^modelador_light/casos/(?P<pk>\d+)/$', CaseView.as_view(),
+        name='case-view',),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -140,10 +140,13 @@ INSTALLED_APPS = (
     'modeloNoc',
     'modeladorFarmacos',
     'efectorescas',
-    'south',
+#    'south',
     'taggit',
     'maestroIndicaciones',
-    'repodocumentos'
+    'repodocumentos',
+    'repocasos',
+    'snomedct',
+    'mptt'
 )
 
 # A sample logging configuration. The only tangible logging

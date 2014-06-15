@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load i18n %}
+
 <html>
 <head>
     <title>{% block title %}Modelador-Semantiko-Light{% endblock %}</title>
-    {% block extrahead %}{% endblock %}
+
 {#    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">#}
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}"
           rel="stylesheet" media="screen">
     <script type="text/javascript" src="/modelador_light/static/jquery.js"></script>
-
+    {% block extrahead %}{% endblock %}
     {% block external %}{% endblock %}
 </head>
 <body style="margin-left: auto; margin-right: auto;">

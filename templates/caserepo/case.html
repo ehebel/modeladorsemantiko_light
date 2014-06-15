@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block branding %}
+{% endblock %}
+
+{% block content %}
+
+    <table border=3 cellpadding=3 width=50%>
+        <tr>
+            <td>
+                Fecha de Examen
+            </td>
+            <td>
+                {{ caso.fechacaso }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Nombre
+            </td>
+            <td>
+                {{ caso.nombre }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Apellido paterno
+            </td>
+            <td>
+                {{ caso.appaterno }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Apellido Materno
+            </td>
+            <td>
+                {{ caso.apmaterno }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Institucion
+            </td>
+            <td>
+                {{ caso.institucion }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Dominio
+            </td>
+            <td>
+                {{ caso.dominio }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Observacion
+            </td>
+            <td>
+                {{ caso.observacion }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                MIRC-CAS
+            </td>
+            <td>
+                <a href="{{ caso.url }}" target="_blank">{{ caso.url }}</a>
+            </td>
+        </tr>
+
+    </table>
+
+
+{% endblock %}

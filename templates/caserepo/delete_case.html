@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block branding %}
+{% endblock %}
+{% block content %}
+
+    <h1>Eliminar Caso</h1>
+
+    <p>¿Está seguro que quiere borrar el caso {{ caso.id }}?</p>
+
+    <form action="{% url "case-delete" pk=caso.id %}" method="POST">
+        {% csrf_token %}
+
+        <input type="submit" value="Si, borrar." />
+        <a href="{% url "case-list" %}">No, cancela.</a>
+    </form>
+
+{% endblock %}

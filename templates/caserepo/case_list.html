@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block branding %}
+{% endblock %}
+
+{% block content %}
+
+
+<h1>Casos</h1>
+
+    <form id="search-form" method="get" action=".">
+        <input type="text" name="FirstName">
+        <input type="submit" value="Buscar" />
+    </form>
+
+<table border=3 cellpadding=3 width=100%>
+    <tr>
+        <td>
+            Fecha de Imagen
+        </td>
+        <td>
+            Nombre
+        </td>
+        <td>
+            Apellido paterno
+        </td>
+        <td>
+            Institucion
+        </td>
+        <td>
+            Observacion
+        </td>
+        <td>
+            MIRC
+        </td>
+        <td>
+            Edición
+        </td>
+    </tr>
+    {% for caso in object_list %}
+{#        <li class="case">#}
+{#            <a href="{{ caso.get_absolute_url }}">{{ caso }}</a>#}
+{#            (<a href="{% url "case-edit" pk=caso.id %}">editar</a>)#}
+{#        </li>#}
+        <tr>
+            <td>
+                {{ caso.fechacaso }}
+            </td>
+            <td>
+                <a href="{{ caso.get_absolute_url }}">{{ caso.nombre }}</a>
+            </td>
+            <td>
+                {{ caso.appaterno }}
+            </td>
+            <td>
+                {{ caso.institucion }}
+            </td>
+            <td>
+                {{ caso.observacion }}
+            </td>
+            <td>
+                {% if caso.url  %}  <a href="{{ caso.url }}" target="_blank">Link</a> {% else %}
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url "case-edit" pk=caso.id %}">editar</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url "case-new" %}">Agregar nuevo caso</a>
+{% endblock %}

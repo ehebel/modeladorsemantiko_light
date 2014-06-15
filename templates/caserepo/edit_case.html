@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="/modelador_light/static/admin/css/base.css" />
+    <link rel="stylesheet" type="text/css" href="/modelador_light/static/admin/css/forms.css" />
+    <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/modelador_light/static/admin/css/ie.css" /><![endif]-->
+    <script type="text/javascript">window.__admin_media_prefix__ = "/modelador_light/static/admin/";</script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+    {% include 'autocomplete_light/static.html' %}
+    <script type="text/javascript" src="/modelador_light/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/core.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/calendar.js"></script>
+    <script type="text/javascript" src="/modelador_light/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+    <meta name="robots" content="NONE,NOARCHIVE" />
+{% endblock %}
+
+{% block branding %}
+{% endblock %}
+
+{% block content %}
+
+{% if caso.id %}
+<h1>Editar Caso</h1>
+{% else %}
+<h1>Agregar nuevo Caso</h1>
+{% endif %}
+
+<form action="{{ action }}" method="POST">
+
+    {% csrf_token %}
+{#    <ul>#}
+{#        {{ form.as_ul }}#}
+{#    </ul>#}
+    {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{#    {% for field in form %}#}
+{#        <div id="{{ field.auto_id }}_container">#}
+{#            {{ field.help_text }}#}
+{#            <div>#}
+{#                {{ field.label_tag }}: {{ field }}#}
+{#            </div>#}
+{#            <div id="{{ field.auto_id }}_errors">#}
+{#                {{ field.errors }}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+
+    <table>
+    {% for field in form %}
+        <div id="{{ field.auto_id }}_container">
+        <tr>
+            <td>
+                {{ field.label_tag }}:
+            </td>
+            <td>
+                {{ field }}
+
+            <label id="{{ field.auto_id }}_errors">
+                {{ field.errors }}
+            </label>
+            </td>
+        </tr>
+        </div>
+    {% endfor %}
+    </table>
+
+
+    {% if caso.id %}
+        <input id="save_case" type="submit" value="Editar" />
+
+        <a href="{% url "case-delete" pk=caso.id %}">Borrar</a>
+    {% else %}
+        <input id="save_case" type="submit" value="Agregar" />
+{#        <input id="save_next_case" type="submit" value="Agregar y Crear Nuevo" />#}
+    {% endif %}
+</form>
+
+<a href="{% url "case-list" %}">Volver al listado</a>
+<br>
+
+{% endblock %}
