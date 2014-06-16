@@ -27,7 +27,7 @@ class ListCaseView(ListView):
 
 
 
-class CreateCaseView(LoggedInMixin,CreateView):
+class CreateCaseView(CreateView):
 
     model = caso
     template_name = 'caserepo/edit_case.html'
