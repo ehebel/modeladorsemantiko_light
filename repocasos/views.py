@@ -1,7 +1,22 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
+from django.http import  HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
+from django.utils.decorators import method_decorator
+
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView, DetailView
 from repocasos import forms
 from repocasos.models import  caso
+
+
+class LoggedInMixin(object):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args,**kwargs):
+        return super(LoggedInMixin, self).dispatch(*args,**kwargs)
 
 
 class ListCaseView(ListView):
@@ -12,7 +27,7 @@ class ListCaseView(ListView):
 
 
 
-class CreateCaseView(CreateView):
+class CreateCaseView(LoggedInMixin,CreateView):
 
     model = caso
     template_name = 'caserepo/edit_case.html'
@@ -38,7 +53,7 @@ class CreateCaseView(CreateView):
         object.save()
         return super(CreateCaseView, self).form_valid(form)
 
-class UpdateCaseView(UpdateView):
+class UpdateCaseView(LoggedInMixin,UpdateView):
 
     model = caso
     template_name = 'caserepo/edit_case.html'
@@ -55,7 +70,7 @@ class UpdateCaseView(UpdateView):
 
         return context
 
-class DeleteCaseView(DeleteView):
+class DeleteCaseView(LoggedInMixin,DeleteView):
 
     model = caso
     template_name = 'caserepo/delete_case.html'
@@ -63,7 +78,7 @@ class DeleteCaseView(DeleteView):
     def get_success_url(self):
         return reverse('case-list')
 
-class CaseView(DetailView):
+class CaseView(LoggedInMixin,DetailView):
 
     model = caso
     template_name = 'caserepo/case.html'
