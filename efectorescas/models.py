@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
+
 
 
 
@@ -100,7 +102,7 @@ class conceptosCASporarea(BaseModel):
         verbose_name_plural = "Conceptos CAS por Area"
 
 
-class efector(BaseModel):
+class efector(MPTTModel):
     OPCIONES_DOMINIO = ((1, 'Imagenes'),(2, 'Procedimientos'),(3,'Laboratorio'))
     ExamCode = models.CharField(max_length=255, primary_key=True)
     ExamName = models.CharField(max_length=255)
@@ -108,6 +110,15 @@ class efector(BaseModel):
     codigoporarea = models.ManyToManyField(conceptosCASporarea, through='efector_codigoporarea')
 
 
+    fecha_creacion = models.DateTimeField(null=False, auto_now_add=True)
+    usuario_creador = models.ForeignKey(User, null=False, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_crea', default=1)
+    fecha_ult_mod = models.DateTimeField(null=True, auto_now=True)
+    usuario_ult_mod = models.ForeignKey(User, null=True, blank=False, editable=False, related_name='%(app_label)s_%(class)s_related_modif', default=1)
+
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='hijos')
+
+    class MPTTMeta:
+        order_insertion_by = ['ExamName']
 
 
     def get_conceptosporarea(objeto):
