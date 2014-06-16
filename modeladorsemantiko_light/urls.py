@@ -23,6 +23,7 @@ import modeladorFarmacos.views
 from repodocumentos.views import ArchivoDetalleVista,ArchivosSubidosView,ArchivoIndiceVista
 from repocasos.views import ListCaseView,CreateCaseView, UpdateCaseView,DeleteCaseView,CaseView
 
+from repocasos.forms import CasoForm
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -48,7 +49,7 @@ urlpatterns = patterns('',
 
     (r'^modelador_light/$', generic.TemplateView.as_view(template_name='index.html')),
 
-
+    (r'^modelador_light/my_admin/jsi18n', 'django.views.i18n.javascript_catalog'),
 
     url(r'^modelador_light/xt_pcce/lista_usuarios/$', modeladorFarmacos.views.VistaListaPCCECreadores.as_view(),
         name='creadores_lista',),
@@ -115,7 +116,7 @@ urlpatterns = patterns('',
 ##Repositorio de Casos
     url(r'^modelador_light/casos/$', ListCaseView.as_view(),
         name='case-list',),
-    url(r'^modelador_light/casos/nuevo', CreateCaseView.as_view(),
+    url(r'^modelador_light/casos/nuevo', CreateCaseView.as_view(form_class=CasoForm),
         name='case-new',),
     url(r'^modelador_light/casos/editar/(?P<pk>\d+)/$', UpdateCaseView.as_view(),
         name='case-edit',),

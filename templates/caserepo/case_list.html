@@ -8,27 +8,27 @@
 
 <h1>Casos</h1>
 
-    <form id="search-form" method="get" action=".">
-        <input type="text" name="FirstName">
-        <input type="submit" value="Buscar" />
-    </form>
+{#    <form id="search-form" method="get" action=".">#}
+{#        <input type="text" name="FirstName">#}
+{#        <input type="submit" value="Buscar" />#}
+{#    </form>#}
 
 <table border=3 cellpadding=3 width=100%>
     <tr>
         <td>
-            Fecha de Imagen
+            Fecha de Adquisición
+        </td>
+{#        <td>#}
+{#            Nombre#}
+{#        </td>#}
+{#        <td>#}
+{#            Apellido paterno#}
+{#        </td>#}
+        <td>
+            Observación
         </td>
         <td>
-            Nombre
-        </td>
-        <td>
-            Apellido paterno
-        </td>
-        <td>
-            Institucion
-        </td>
-        <td>
-            Observacion
+            Institución
         </td>
         <td>
             MIRC
@@ -46,17 +46,17 @@
             <td>
                 {{ caso.fechacaso }}
             </td>
+{#            <td>#}
+{#                <a href="{{ caso.get_absolute_url }}">{{ caso.nombre }}</a>#}
+{#            </td>#}
+{#            <td>#}
+{#                {{ caso.appaterno }}#}
+{#            </td>#}
             <td>
-                <a href="{{ caso.get_absolute_url }}">{{ caso.nombre }}</a>
-            </td>
-            <td>
-                {{ caso.appaterno }}
+                <a href="{{ caso.get_absolute_url }}">{{ caso.observacion }}</a>
             </td>
             <td>
                 {{ caso.institucion }}
-            </td>
-            <td>
-                {{ caso.observacion }}
             </td>
             <td>
                 {% if caso.url  %}  <a href="{{ caso.url }}" target="_blank">Link</a> {% else %}
