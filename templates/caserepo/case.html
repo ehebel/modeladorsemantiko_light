@@ -7,7 +7,7 @@
     <table border=3 cellpadding=3 width=50%>
         <tr>
             <td>
-                Fecha de Examen
+                Fecha de Adquisición
             </td>
             <td>
                 {{ caso.fechacaso }}
@@ -39,10 +39,10 @@
         </tr>
         <tr>
             <td>
-                Institucion
+                Institución
             </td>
             <td>
-                {{ caso.institucion }}
+                {{ caso.get_institucion_display }}
             </td>
         </tr>
         <tr>
@@ -50,7 +50,7 @@
                 Dominio
             </td>
             <td>
-                {{ caso.dominio }}
+                {{ caso.get_dominio_display }}
             </td>
         </tr>
         <tr>
@@ -59,6 +59,14 @@
             </td>
             <td>
                 {{ caso.observacion }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                ¿Requiere seguimiento?
+            </td>
+            <td>
+                {% if caso.seguimiento %}Si{% else %}No{% endif %}
             </td>
         </tr>
         <tr>

@@ -18,14 +18,17 @@
         <td>
             Fecha de Adquisición
         </td>
-{#        <td>#}
-{#            Nombre#}
-{#        </td>#}
-{#        <td>#}
-{#            Apellido paterno#}
-{#        </td>#}
         <td>
             Observación
+        </td>
+        <td>
+            Etiquetas
+        </td>
+        <td>
+            Dominio
+        </td>
+        <td>
+            ¿Seguimiento?
         </td>
         <td>
             Institución
@@ -46,14 +49,21 @@
             <td>
                 {{ caso.fechacaso }}
             </td>
-{#            <td>#}
-{#                <a href="{{ caso.get_absolute_url }}">{{ caso.nombre }}</a>#}
-{#            </td>#}
-{#            <td>#}
-{#                {{ caso.appaterno }}#}
-{#            </td>#}
             <td>
                 <a href="{{ caso.get_absolute_url }}">{{ caso.observacion }}</a>
+            </td>
+            <td>
+                {% for foo in caso.tagging.all %}
+                    {{ foo.term }};
+                {% endfor %}
+
+            </td>
+
+            <td>
+                {{ caso.get_dominio_display }}
+            </td>
+            <td>
+                {% if caso.seguimiento %}Si{% else %}No{% endif %}
             </td>
             <td>
                 {{ caso.institucion }}
